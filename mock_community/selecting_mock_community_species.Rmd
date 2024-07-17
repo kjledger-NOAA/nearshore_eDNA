@@ -28,7 +28,7 @@ candidates <- read.csv("mock_community/candidate_spp_list.csv")
 read in reference database - for now i'm using the outputs for the 12s expanded mifish db (https://zenodo.org/records/8409202)
 ```{r}
 single <- read.csv("reference_db/Sequences_with_single_taxonomic_path.csv")
-multiple <- read.csv("reference_db//Sequences_with_multiple_taxonomic_paths.csv")
+multiple <- read.csv("reference_db/Sequences_with_multiple_taxonomic_paths.csv")
 ```
 
 filter single path taxa
