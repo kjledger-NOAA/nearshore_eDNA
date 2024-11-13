@@ -1,0 +1,81 @@
+---
+title: "tax assignment - custom db w only mock species"
+output: html_document
+date: "2024-11-12"
+---
+
+```{r load-libraries}
+library(tidyverse)
+rename <- dplyr::rename
+```
+
+## blastn agaisnt db of just mock communtiy fasta sequences 
+$ blastn -query /home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/filtered.seqs.fasta -db /home/kimberly.ledger/nearshore_eDNA/data/samples_w_mock/mock_db/mock_db -out /home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mockdb_blastn_results.txt -perc_identity 98 -qcov_hsp_perc 98 -num_threads 10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sscinames staxids'
+
+input blastn results from mock community database
+```{r}
+m_blast <- read.table("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mockdb_blastn_results.txt")  %>%
+  filter(V4 > 100) %>% # make sure all retained matches are >100 bp
+  select(-V5, -V6, -V7, -V8, -V9, -V10, -V11, -V12, -V13, -V14) %>%  #remove unnecessary columns
+  group_by(V1, V2) %>% # group by the sequence key and the full taxonomy to reduce duplicate entries
+  unique() %>% # doing that reduced the number of entries
+  rename(qseqid=V1, species=V2, perc_id=V3, length=V4) #%>% #rename headers
+  #filter(perc_id > 98)
+```
+
+right now species names are just the accession numbers so read in file with species ids 
+```{r}
+m_spp <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mock/12s_mifish_gblocks.csv") %>%
+  rename(species = Name) %>%
+  select(!Description)
+```
+
+```{r}
+m_blast_spp <- m_blast %>%
+  left_join(m_spp, by= "species")
+```
+
+## rank the hits by % identity
+```{r}
+seq_id_diff <- m_blast_spp %>%
+  select(-length) %>%
+  select(!species) %>%
+  group_by(qseqid, Organism) %>%
+    mutate(seq_percID = max(perc_id)) %>%
+    group_by(qseqid, Organism, seq_percID) %>%
+  summarise(max(seq_percID)) %>% # take just the top hit for each taxon (for each sequence)
+  select(-`max(seq_percID)`) %>%
+  ungroup() %>%
+  group_by(qseqid) %>%
+      #mutate(id_rank = rank(desc(seq_percID), ties.method = "min")) %>% # rank the taxonomic hits per sequence by % id
+      mutate(top_perc = max(seq_percID)) %>% # designate the highest % id for the best taxonomic hit in each sequence (in some, but not all cases, this is 100%)   %>%
+      mutate(diff = top_perc - seq_percID) %>% # calculate the difference between the % identity of the top hit and each subsequent taxonomic hit
+      arrange(diff)
+
+seq_id_diff
+```
+
+how many asvs does each species have, and what are the percIDs? 
+```{r}
+seq_id_diff %>%
+  group_by(Organism) %>%
+  summarise(Org_top = max(seq_percID))
+```
+
+okay, cool so besides the two species not in the mock communities, all species have a 100% asv hit. 
+
+what percent of reads assigned to a species belong to this 100% hit? 
+will first need to resolve some of this low/multiple percent hit asvs
+```{r}
+keepers <- seq_id_diff %>%
+  filter(seq_percID > 98) %>%
+  filter(diff < 0.5)
+```
+
+```{r}
+write.csv(keepers, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mockdb_taxonomy.csv")
+```
+
+
+
+
