@@ -1,0 +1,69 @@
+---
+title: "check stan models"
+author: "Kimberly Ledger"
+date: "2024-09-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Read in the posteriors for mock communities
+```{r}
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/mock_quant/raw_20240903_testcom1&2.Rdata")
+raw <- Output
+
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/mock_quant/mock_20240903_testcom1&2.Rdata")
+mock1 <- Output
+```
+
+
+```{r}
+fit <- Output$stanMod
+```
+
+## Scatter plots
+
+Extract the parameters of the fit and plot them
+```{r}
+params=extract(fit, permuted=FALSE, inc_warmup=TRUE)
+params
+```
+
+```{r}
+plot(c(-5,25), c(-5,25), ty='n', xlab='mu', ylab='tau')
+lines(params[,'chain:1','mu'], params[,'chain:1','tau'], col='black',ty='o', pch=20)
+lines(params[,'chain:2','mu'], params[,'chain:2','tau'], col='orange',ty='o', pch=20)
+lines(params[,'chain:3','mu'], params[,'chain:3','tau'], col='red',ty='o', pch=20)
+legend('topright', legend=c('chain1', 'chain2', 'chain3'), col=c('black', 'orange', 'red'), lty='solid', bty='n')
+```
+
+## Trace plots
+
+```{r}
+traceplot(fit, pars=c('alpha'))
+traceplot(fit, pars=c('mu_samp'))
+```
+## Rhat 
+Rhat statistic is given in the last column of the print() function. It compares the variances of the pooled chains to the individual chains for each parameter. Ideally Rhat should be less than 1.1 
+```{r}
+print(fit)
+```
+
+## Neff
+Neff is the number of effective samples, it tells you the number of samples taking into account the correlations between samples. Ideally the number of effective samples divided by the number of iterations should be greater than 0.01
+
+```{r}
+neff = summary(fit)$summary[,'n_eff']
+neff/1500
+```
+
+
+
+## Divergences 
+
+Divergences are indicators of regions of high curvature that is not well explored by Stan. These can be seen as red points in the pairs() plot of parameters. 
+```{r}
+pairs(fit, pars=c('alpha'))
+```
