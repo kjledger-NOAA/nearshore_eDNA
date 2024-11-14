@@ -1,14 +1,9 @@
 ---
 title: "Quantitative metabarcoding of AK nearshore mock community samples"
 author:"Kimberly Ledger"
-date: "2024-08-22"
+date: "2024-11-13"
 output: github_document
 ---
-
-notes to self from 11/12/24:
--need to rerun without com4 included 
--decide on a training/testing framework so that i'm not running this code a million times... 
-
 
 this code is using the gblock mock communities from the 20240820 miseq run. and nov miseq run. 
 input is updated (nov 2024) taxonomic assignment, etc 
@@ -67,13 +62,13 @@ i'm going to check how well the calibration works by comparing alpha values deri
 I've settled on three subsets of mock communities to set at the "known" samples to test. 
 group1: 1,3,6,8,12,13
 group2: 2,5,6,7,10,13
-group3: 1,3,5,8,9,11
+group3: 1,3,5,8,9,11                #### note to future self: maybe change group3 so it's not so similar to group 1
   
 ```{r}
 #set all or some mock communities as unknowns 
 env <- mockcom_data %>%  
   #filter(community %in% c("COM2", "COM3", "COM4", "COM5", "COM6", "COM7","COM8", "COM9", "COM10", "COM11", "COM12", "COM13")) %>%  
-  filter(!community %in% c("COM1", "COM3", "COM6", "COM8", "COM12","COM13")) %>%  
+  filter(!community %in% c("COM1", "COM3", "COM5", "COM8", "COM8","COM11")) %>%  
   rename(Species = taxon)
   
 env <- env %>%  
@@ -110,7 +105,7 @@ mock community (i.e., known) samples with the following column names:
 #set up mock community samples
 mc <- mockcom_data %>%  
     #filter(!community %in% c("COM2", "COM3", "COM4", "COM5", "COM6", "COM7","COM8", "COM9", "COM10", "COM11", "COM12", "COM13")) %>%  
-    filter(community %in% c("COM1", "COM3", "COM6", "COM8", "COM12","COM13")) %>%  
+    filter(community %in% c("COM1", "COM3", "COM5", "COM8", "COM8","COM11")) %>%  
     rename("Species" = "taxon")  #mock comm samples
 mc$Species[mc$Species == mostCommon] <- paste0("zRefSpecies_", mostCommon)   #make the most common species the reference species
   
@@ -403,7 +398,7 @@ Output <- list(
 ```
 
 ```{r}
-save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241113_group1",".Rdata"))
+save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241113_group3",".Rdata"))
 ```
 
 
@@ -618,5 +613,5 @@ Output <- list(
 ```
 
 ```{r}
-save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group1",".Rdata"))
+save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group3",".Rdata"))
 ```

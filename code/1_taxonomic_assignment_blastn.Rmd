@@ -396,7 +396,7 @@ tax_df_updated <- tax_df_2 %>%
        taxon = ifelse(genus == "Gadus", "Gadus", taxon),
        taxonomic_level = ifelse(genus == "Gadus", "genus", taxonomic_level),
        taxon = ifelse(qseqid %in% c("ASV_0020", "ASV_0044"), "Oncorhynchus keta", taxon),
-       taxon = ifelse(qseqid %in% c("ASV_0083"), "Oncorhynchus kisutch", taxon),
+       taxon = ifelse(qseqid %in% c("ASV_0083"), "Oncorhynchus kisSutch", taxon),
        taxonomic_level = ifelse(qseqid %in% c("ASV_0020", "ASV_0044","ASV_0083"), "species", taxonomic_level))
 ```
 

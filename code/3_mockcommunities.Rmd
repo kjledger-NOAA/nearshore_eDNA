@@ -147,6 +147,18 @@ asvs_in_mocks <- asvs_in_mocks %>%
   left_join(mock_assignments)
 ```
 
+```{r}
+asvs_in_mocks <- asvs_in_mocks %>%
+  filter(ASV != "ASV_0610") %>%         ## remove the asvs that don't belong 
+  filter(ASV != "ASV_0864") %>% 
+  filter(ASV != "ASV_0853") %>%
+  select(ASV, taxon, tot_reads)
+
+write.csv(asvs_in_mocks, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/asvs_in_mocks.csv")
+```
+
+
+
 very similar, going to continue with the blastn taxonomic assignments
 
 reformat and join the mock reads with expected mock values 
