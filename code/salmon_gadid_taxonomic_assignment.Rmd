@@ -5,9 +5,9 @@ date: "2024-07-17"
 output: html_document
 ---
 
-from 'outputs' folder: 
+from 'outputs' folder on eDNA VM: 
 
-blastn -query oncorhynchus.fasta -db /home/kimberly.ledger/BeringSea_Arctic_eDNA/custom_dbs/oncorhynchus_db -out oncorhynchus_results.txt -perc_identity 96 -qcov_hsp_perc 100 -num_threads 10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sscinames staxids'
+blastn -query oncorhynchus.fasta -db /home/kimberly.ledger/BeringSea_Arctic_eDNA/custom_dbs/oncorhynchus_db -out oncorhynchus_results.txt -perc_identity 96 -qcov_hsp_perc 98 -num_threads 10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sscinames staxids'
 
 blastn -query gadidae.fasta -db /home/kimberly.ledger/BeringSea_Arctic_eDNA/custom_dbs/gadidae_db -out gadidae_results.txt -perc_identity 96 -qcov_hsp_perc 100 -num_threads 10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sscinames staxids'
 
@@ -21,7 +21,7 @@ rename <- dplyr::rename
 
 input blastn results from custom salmon and gadid databases
 ```{r}
-oncor <- read.table("/home/kimberly.ledger/nearshore_eDNA/outputs/oncorhynchus_results.txt")  %>%
+oncor <- read.table("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/oncorhynchus_results.txt")  %>%
   filter(V4 > 100) %>% # make sure all retained matches are >100 bp
   select(-V5, -V6, -V7, -V8, -V9, -V10, -V11, -V12, -V13, -V14) %>%  #remove unnecessary columns
   group_by(V1, V2) %>% # group by the sequence key and the full taxonomy to reduce duplicate entries
@@ -51,7 +51,7 @@ seq_id_diff <- oncor %>%
   ungroup() %>%
   group_by(qseqid) %>%
       #mutate(id_rank = rank(desc(seq_percID), ties.method = "min")) %>% # rank the taxonomic hits per sequence by % id
-       mutate(top_perc = max(seq_percID)) %>% # designate the highest % id for the best taxonomic hit in each sequence (in some, but not all cases, this is 100%)   %>%
+      mutate(top_perc = max(seq_percID)) %>% # designate the highest % id for the best taxonomic hit in each sequence (in some, but not all cases, this is 100%)   %>%
       mutate(diff = top_perc - seq_percID) %>% # calculate the difference between the % identity of the top hit and each subsequent taxonomic hit
       arrange(diff)
 
@@ -61,7 +61,7 @@ seq_id_diff
 since there are very few basepair difference among species, let's go with species within 0.5% of the top match 
 ```{r}
 keepers <- seq_id_diff %>%
-  filter(diff < 0.5)
+  filter(diff == 0)
 ```
 
 
@@ -102,10 +102,11 @@ oncorhynchus_df <- singleton_df %>%
 oncorhynchus_df$taxon <- gsub("_", " ", oncorhynchus_df$taxon)
 
 #export 
-write.csv(oncorhynchus_df, "/home/kimberly.ledger/nearshore_eDNA/outputs/oncorhynchus_asv_id.csv")
+#write.csv(oncorhynchus_df, "/home/kimberly.ledger/nearshore_eDNA/outputs/oncorhynchus_asv_id.csv")
 ```
 
 
+### NOT DOING THIS!!!! 
 now repeat for gadids 
 
 ```{r}

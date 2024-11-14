@@ -5,7 +5,9 @@ date: "2024-07-17"
 output: html_document
 ---
 
-taxonomic assignment of nearshore eDNA ASVs from 20240701 sequencing run
+updated: 21 Aug 2024 
+
+taxonomic assignment of nearshore eDNA ASVs from 20240701 sequencing run with mock communities samples (sequenced on 20240820) included 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -20,7 +22,7 @@ rename <- dplyr::rename
 
 ## load output from taxonkit 
 ```{r load-output-from-taxonkit}
-taxonomy <-read.delim("/home/kimberly.ledger/nearshore_eDNA/data/blastn_taxlineage.txt", header = FALSE, na.strings=c(""," ","NA"))
+taxonomy <-read.delim("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mock/blastn_taxlineage_ns_w_mock.txt", header = FALSE, na.strings=c(""," ","NA"))
 
 head(taxonomy)
 ```
@@ -61,17 +63,125 @@ taxon_df <- tax_df %>%
   filter(!grepl("\\d", species))
 ```
 
-## figure out what ASVs are unambiguously a single species
+## what non-fish are here? 
 ```{r}
-single_spp_seqs <- taxon_df %>% 
+not_Actinopteri <- taxon_df %>%
+  filter(class != "Actinopteri") %>%
+  select(species, genus, family, order, class, phylum) %>%
+  unique()
+```
+for this project, non-fish are not of interest so we will just remove all of them from the analysis
+
+## let's filter out species based on geographic distribution 
+
+## now look at the fish and figure out what taxa are in/out of our range
+```{r}
+to_check_range <- taxon_df %>%
+  filter(class == "Actinopteri") %>%
+  select(species, genus, family, order, class, phylum) %>%
+  unique()
+```
+
+## check ranges for species using rfishbase 
+## also at this step, check 
+```{r}
+#library(remotes)
+#remotes::install_github("ropensci/rfishbase")
+library(rfishbase)
+
+#one-time download of all fishbase tables... this takes a bit 
+fb_import()
+
+#first, validate species names using rfishbase synonyms
+spp_df <- synonyms(to_check_range$species)
+
+syn <- spp_df %>% 
+  filter(Status == "synonym") %>%
+  select(synonym, Species) %>%
+  unique()
+  
+to_check_range_1 <- to_check_range %>%
+  filter(!species %in% syn$synonym)
+
+to_check_range <- c(to_check_range_1$species, syn$Species)
+
+#get distribution info 
+spp_distribution <- distribution(to_check_range) %>%
+  select(Species, FAO) %>%
+  unique()
+
+#add column to designate if we will consider a species as "in range"- for this study, this will be NE Pacific
+spp_distribution_range <- spp_distribution %>%
+  mutate(in_range = ifelse(is.na(FAO), NA, "no"),
+         in_range = ifelse(FAO == "Pacific, Northeast", "yes", in_range))
+
+#keep just a list of spp names and yes/no/NA for "in range"  - this way we can keep track of what spp didn't have any reference information in fishbase to determine range 
+range_na <- spp_distribution_range %>%
+  select(Species, in_range) %>%
+  unique() %>%
+  filter(is.na(in_range))
+
+range_na <- range_na %>%
+  mutate(in_range = ifelse(Species == "Ammodytes japonicus", "no", in_range),
+         in_range = ifelse(Species == "Sebastes cheni", "no", in_range))
+
+in_range <- spp_distribution_range %>%
+  select(Species, in_range) %>%
+  filter(in_range == "yes")
+```
+
+When a valid name was not found, the presence of a species in the study area was checked using the GBIF database (https://www.gbif.org/).
+
+
+# update taxon dataframe with correct species names (i.e. not synonyms) and then filter the dataframe
+```{r}
+## what species are in range but used a synonym in taxon dataframe? 
+temp <- in_range %>%
+  filter(Species %in% syn$Species)
+temp 
+
+#what names were used in the taxon_df? 
+syn %>%
+  filter(Species %in% temp$Species)
+
+#rename these in the taxon_df
+taxon_df_updated_syn <- taxon_df %>%
+  mutate(species = ifelse(species == "Gadus ogac", "Gadus macrocephalus", species),
+         species =  ifelse(species == "Polypera greeni", "Liparis greeni", species),
+         genus = ifelse(genus == "Polypera", "Liparis", genus),
+         species =  ifelse(species == "Embassichthys bathybius", "Microstomus bathybius", species),
+         genus = ifelse(genus == "Embassichthys", "Microstomus", genus))
+
+taxon_df_inrange <- taxon_df_updated_syn %>%
+  filter(species %in% in_range$Species)
+```
+
+
+## i've identified a few additional species that are not in AK that removing can improve taxonomic assignment of some ASVs
+```{r}
+taxon_df_inrange <- taxon_df_inrange %>% 
+  filter(species != "Sebastes rastrelliger") %>%    ## only of CA coast
+  filter(species != "Hippoglossoides elassodon") %>%  ## might want to keep this 
+  filter(species != "Hippoglossoides robustus") %>%
+  mutate(species = ifelse(species == "Sebastes caurinus", "Sebastes caurinus or Sebastes maliger", species),
+         species = ifelse(species == "Sebastes maliger", "Sebastes caurinus or Sebastes maliger", species))
+```
+
+
+## figure out what ASVs have only one taxon hit
+```{r}
+single_spp_seqs <- taxon_df_inrange %>% 
   group_by(qseqid) %>%
   add_tally(name = "n_taxa") %>%
-  filter(n_taxa == 1)
+  filter(n_taxa == 1) %>%
+  rename(seq_percID = perc_id) %>%
+  select(!length) %>%
+  select(!n_taxa)
 ```
 
 ## remove the single-species seqs from the dataframe and then rank the hits by % identity for the remaining seqs
 ```{r}
-seq_id_diff <- taxon_df %>%
+seq_id_diff <- taxon_df_inrange %>%
   anti_join(., single_spp_seqs) %>%  ## comment out this line if there are no single species ASVs
   select(-length) %>%
   group_by(qseqid, species, genus, family, order, class, phylum, kingdom) %>%
@@ -81,7 +191,7 @@ seq_id_diff <- taxon_df %>%
   select(-`max(seq_percID)`) %>%
   ungroup() %>%
   group_by(qseqid) %>%
-      #mutate(id_rank = rank(desc(seq_percID), ties.method = "min")) %>% # rank the taxonomic hits per sequence by % id
+       #mutate(id_rank = rank(desc(seq_percID), ties.method = "min")) %>% # rank the taxonomic hits per sequence by % id
        mutate(top_perc = max(seq_percID)) %>% # designate the highest % id for the best taxonomic hit in each sequence (in some, but not all cases, this is 100%)   %>%
       mutate(diff = top_perc - seq_percID) %>% # calculate the difference between the % identity of the top hit and each subsequent taxonomic hit
         arrange(diff)
@@ -91,13 +201,13 @@ Now you have the single best entry for each species for each sequence ranked and
 
 For sequences with multiple top hits, where the difference between ranked taxa = 0, you will end up defaulting to genus- or family-level ID. We'll do the same for any sequences where the difference between the first and second ranked taxa is < 1%.
 
-## Figure out which differences are **> 1%** and eliminate those first
+## Figure out which differences are **> 0.001%** and eliminate those first - 
 ```{r}
 # filter out any taxa that are >1% less matching identity than the top taxonomic hit for a given sequence
 to_remove_low_perc_hits <- seq_id_diff %>%
   ungroup() %>%
   group_by(qseqid) %>%
-  filter(diff > 1)
+  filter(diff > 0.001)
 
 keepers <- seq_id_diff %>%
   anti_join(to_remove_low_perc_hits)
@@ -225,7 +335,7 @@ single_kingdom <- keepers %>%
 ## modify the singleton_df to include the right variable headers
 ```{r}
 single_spp <- singleton_df %>%
-  select(-perc_id, -length, -n_taxa) %>%
+  #select(-perc_id, -length, -n_taxa) %>%
   mutate(taxonomic_level = "species") %>%
   mutate(taxon = species)
 ```
@@ -235,106 +345,76 @@ single_spp <- singleton_df %>%
 sorted_tax_df <- bind_rows(single_kingdom, single_phylum, single_class, single_order, single_family, single_genus, single_spp)
 ```
 
+## now going to use my custom salmon db to update those ASVs 
+
+## output a list of all the salmon ASVs
+```{r}
+salmon <- sorted_tax_df %>%
+  filter(genus == "Oncorhynchus") %>%
+  select(qseqid) %>%
+  unique()
+```
+
+## filter fasta to be just the salmon
+```{r}
+# Load the necessary libraries
+library(Biostrings)
+
+# Define the input and output file paths
+fasta_file <- "/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mock/filtered.seqs.fasta"
+output_file <- "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/oncorhynchus.fasta"
+
+# Read the FASTA file
+fasta_seqs <- readDNAStringSet(fasta_file)
+
+# Create a list of ASV sequence headers
+asv_headers <- salmon$qseqid  
+
+# Filter the FASTA sequences based on the ASV headers
+salmon_seqs <- fasta_seqs[names(fasta_seqs) %in% asv_headers]
+
+# Write the filtered sequences to a new FASTA file
+writeXStringSet(salmon_seqs, filepath = output_file)
+```
+
+okay, so i cleaned up reference seq and re-blast the salmon reads. not many changes were there so just manually going to enter in the IDs
+
+```{r}
+sorted_tax_df_2 <- sorted_tax_df %>%
+  mutate(taxon = ifelse(qseqid == "ASV_0020", "Oncorhynchus keta", taxon),
+         species = ifelse(qseqid == "ASV_0020", "Oncorhynchus keta", species),
+         taxonomic_level = ifelse(qseqid == "ASV_0020", "species", taxonomic_level),
+         taxon = ifelse(qseqid == "ASV_0042", "Oncorhynchus keta", taxon),
+         species = ifelse(qseqid == "ASV_0042", "Oncorhynchus keta", species),
+         taxonomic_level = ifelse(qseqid == "ASV_0042", "species", taxonomic_level),
+         taxon = ifelse(qseqid == "ASV_0088", "Oncorhynchus mykiss", taxon),
+         species = ifelse(qseqid == "ASV_0088", "Oncorhynchus mykiss", species),
+         taxonomic_level = ifelse(qseqid == "ASV_0088", "species", taxonomic_level),
+         taxon = ifelse(qseqid == "ASV_0458", "Oncorhynchus keta", taxon),
+         species = ifelse(qseqid == "ASV_0458", "Oncorhynchus keta", species),
+         taxonomic_level = ifelse(qseqid == "ASV_0458", "species", taxonomic_level)) %>%
+  unique()
+```
+
+also going to made any pollock/pcod to just be Gadus 
+```{r}
+sorted_tax_df_3 <- sorted_tax_df_2 %>%
+  mutate(taxon = ifelse(genus == "Gadus", "Gadus", taxon),
+         taxonomic_level = ifelse(genus == "Gadus", "genus", taxonomic_level))
+```
+
+
+```{r}
+write.csv(sorted_tax_df_3, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/tax_df_20240822.csv")
+```
+ 
+
+STOPPED HERE !!! 
+
+
 # now let's take a closer look at the assignments we are getting from inital blastn 
 
-## what non-fish are here? 
-```{r}
-not_Actinopteri <- sorted_tax_df %>%
-  filter(class != "Actinopteri") %>%
-  select(species, genus, family, order, class, phylum) %>%
-  unique()
-```
 
-for this project we are not interested in non-fish, so we will just remove all of them from the analysis
-
-## now look at the fish and figure out what taxa are in/out of our range
-```{r}
-to_check_range <- sorted_tax_df %>%
-  filter(class == "Actinopteri") %>%
-  select(species, genus, family, order, class, phylum) %>%
-  unique()
-```
-
-## check ranges for species using rfishbase 
-## also at this step, check 
-```{r}
-#library(remotes)
-#remotes::install_github("ropensci/rfishbase")
-library(rfishbase)
-
-#one-time download of all fishbase tables... this takes a bit 
-fb_import()
-
-#first, validate species names using rfishbase synonyms
-spp_df <- synonyms(to_check_range$species)
-
-syn <- spp_df %>% 
-  filter(Status == "synonym")
-  
-to_check_range <- to_check_range %>% 
-  mutate(validated_name = ifelse(species %in% syn$synonym, syn$Species, species))
-    
-to_check_range %>%
-  filter(species != validated_name)
-
-#get distribution info 
-spp_distribution <- distribution(to_check_range$validated_name) %>%
-  select(Species, FAO) %>%
-  unique()
-
-#add column to designate if we will consider a species as "in range"- for this study, this will be NE Pacific
-spp_distribution_range <- spp_distribution %>%
-  mutate(in_range = ifelse(is.na(FAO), NA, "no"),
-         in_range = ifelse(FAO == "Pacific, Northeast", "yes", in_range))
-
-#keep just a list of spp names and yes/no/NA for "in range"  - this way we can keep track of what spp didn't have any reference information in fishbase to determine range 
-spp_range <- spp_distribution_range %>%
-  select(Species, in_range) %>%
-  unique()
-
-#how many entries do not have range info? 
-range_na <- spp_range %>%
-  filter(is.na(in_range))
-```
-
-When a valid name was not found, the presence of a species in the study area was checked using the GBIF database (https://www.gbif.org/).
-
-# some species do not have range info - manually determine if these species should be considered in range
-```{r}
-range_na <- range_na %>%
-  mutate(in_range = ifelse(Species == "Ammodytes japonicus", "no", in_range),
-         #in_range = ifelse(Species == "Sebastiscus vibrantus", "no", in_range),
-         in_range = ifelse(Species == "Sebastes cheni", "no", in_range))
-```
-
-# filter the dataframe
-```{r}
-in_range <- spp_range %>%
-  filter(in_range == "yes")
-
-#also_in_range <- range_na %>%
-#  filter(in_range == "yes")
-
-## what species are in range but used a synonym? 
-temp <- in_range %>%
-  filter(Species %in% syn$Species)
-temp 
-
-#what names were used in the tax_df? 
-syn %>%
-  filter(Species %in% temp$Species)
-
-#rename these in the sorted_tax_df
-temp2 <- sorted_tax_df %>%
-  mutate(species = ifelse(species == "Gadus ogac", "Gadus macrocephalus", species),
-         taxon = ifelse(taxon == "Gadus ogac", "Gadus macrocephalus", taxon),
-         species =  ifelse(species == "Polypera greeni", "Liparis greeni", species),
-         taxon = ifelse(taxon == "Polypera greeni", "Liparis greeni", taxon),
-         genus = ifelse(genus == "Polypera", "Liparis", genus))
-
-tax_df_2 <- temp2 %>%
-  filter(species %in% in_range$Species)
-```
 
 okay, now that out-of-range species have been removed, i need to remake the taxonomic table to reflect the more specific ids
 
@@ -343,7 +423,8 @@ okay, now that out-of-range species have been removed, i need to remake the taxo
 #remove taxon_level and taxon designations
 tax_df_2 <- tax_df_2 %>%
   select(!taxonomic_level) %>%
-  select(!taxon)
+  select(!taxon) %>%
+  filter(diff < 0.5)   ### go with 0.5% assignment threshold
 
 singletons <- tax_df_2 %>%
   select(qseqid) %>%
@@ -472,8 +553,11 @@ filtered_tax_df <- bind_rows(single_kingdom, single_phylum, single_class, single
 
 just so i can pick up on this without having to rerun all the code, let me export the filtered_tax_df
 ```{r}
-#write.csv(filtered_tax_df, "/home/kimberly.ledger/nearshore_eDNA/outputs/tax_df_20240717.csv")
+#write.csv(filtered_tax_df, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mock/tax_df_20240821.csv")
 ```
+ 
+ 
+### STOPPED HERE DURING RERUN W/ MOCK COMMUNITIES INCLUDED ###  
  
 ## output a list of all the Gadidae ASVs
 ```{r}
