@@ -15,10 +15,10 @@ library(ggsci)
 
 # Read in the posteriors for mock communities
 ```{r}
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241113_group1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241119_group1.Rdata")
 raw <- Output
 
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group1.Rdata")
 mock1 <- Output
 ```
 
@@ -194,7 +194,11 @@ p1 <- grid.arrange(COM2_plot + ggtitle(NULL,subtitle="COM2"),
               COM11_plot + ggtitle(NULL,subtitle="COM11"),
               ncol=6,nrow=1)
 
-ggsave(p1, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates.png", width = 10, height = 5, units = "in")
+COM2_plot
+
+ggsave(COM7_plot, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates_com7.png", width = 4, height = 5, units = "in")
+
+#ggsave(p1, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates.png", width = 10, height = 5, units = "in")
 ```
 
 

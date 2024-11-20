@@ -154,7 +154,7 @@ asvs_in_mocks <- asvs_in_mocks %>%
   filter(ASV != "ASV_0853") %>%
   select(ASV, taxon, tot_reads)
 
-write.csv(asvs_in_mocks, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/asvs_in_mocks.csv")
+#write.csv(asvs_in_mocks, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/asvs_in_mocks.csv")
 ```
 
 
@@ -195,7 +195,7 @@ mock_export <- mock_table %>%
   left_join(mock_start) %>%
   mutate(start_conc_ng = ifelse(is.na(start_conc_ng), 0, start_conc_ng))
 
-write.csv(mock_export, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241112.csv", row.names = F)
+#write.csv(mock_export, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241119.csv", row.names = F)
 ```
 
 plot the mock community reads counts

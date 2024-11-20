@@ -15,11 +15,11 @@ library(ggsci)
 
 # Read in the posteriors for mock communities
 ```{r}
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group1.Rdata")
 group1 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group2.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group2.Rdata")
 group2 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241113_group3.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group3.Rdata")
 group3 <- Output
 ```
 
@@ -197,4 +197,7 @@ p_clr <-  ggplot(clr_alpha_all) +
           axis.text.y = element_text(size=10))
 
 p_clr
+```
+```{r}
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr.png", width = 8, height = 5, units = "in")
 ```
