@@ -303,7 +303,6 @@ tibble_to_matrix <- function (tb) {
 }
 ```
 
-will run this seperatly for kenai and kasilof
 ```{r}
 all.distances.full <- tibble_to_matrix(normalized_w_meta)
 

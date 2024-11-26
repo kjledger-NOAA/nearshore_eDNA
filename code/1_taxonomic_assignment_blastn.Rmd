@@ -376,6 +376,12 @@ Sebastes 1: Sebastes caurinus/Sebastes maliger
 Sebastes 2: Sebastes auriculatus/Sebastes rastrelliger
 Sebastes 3: lots of Sebastes sp including Sebastes flavidus
 -put all Gadus reads to genus level. 
+1 - put all Ammodytes reads to Ammodytes personatus (it's the only species present in region)
+2 - lump the few Anoplarchus purpurescens reads to genus level 
+3 - lump the few Cottus cognatus reads to genus level
+4 - lump the few Myoxocephalus stelleri to genus level
+5 - put Pholis reads to Pholis laeta
+
 
 
 ```{r}
@@ -387,6 +393,7 @@ tax_df_2 <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_moc
 ```{r}
 tax_df_updated <- tax_df_2 %>%
   mutate(taxon = ifelse(qseqid %in% c("ASV_0053"), "Ophiodon elongatus", taxon),
+         taxonomic_level = ifelse(qseqid %in% c("ASV_0053"), "species", taxonomic_level),
        taxon = ifelse(qseqid %in% c("ASV_0029"), "Pleuronectidae 1", taxon),
        taxon = ifelse(qseqid %in% c("ASV_0038", "ASV_0420", "ASV_0431", "ASV_0470", "ASV_0496", "ASV_0554", "ASV_0622", "ASV_0623"), "Pleuronectidae 2", taxon),
        taxon = ifelse(qseqid %in% c("ASV_0071", "ASV_0175", "ASV_0365"), "Pleuronectidae 3", taxon),
@@ -396,8 +403,18 @@ tax_df_updated <- tax_df_2 %>%
        taxon = ifelse(genus == "Gadus", "Gadus", taxon),
        taxonomic_level = ifelse(genus == "Gadus", "genus", taxonomic_level),
        taxon = ifelse(qseqid %in% c("ASV_0020", "ASV_0044"), "Oncorhynchus keta", taxon),
-       taxon = ifelse(qseqid %in% c("ASV_0083"), "Oncorhynchus kisSutch", taxon),
-       taxonomic_level = ifelse(qseqid %in% c("ASV_0020", "ASV_0044","ASV_0083"), "species", taxonomic_level))
+       taxon = ifelse(qseqid %in% c("ASV_0083"), "Oncorhynchus kisutch", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0020", "ASV_0044","ASV_0083"), "species", taxonomic_level),
+       taxon = ifelse(qseqid %in% c("ASV_0108"), "Ammodytes personatus", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0108"), "species", taxonomic_level), 
+       taxon = ifelse(qseqid %in% c("ASV_0262"), "Anoplarchus", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0262"), "genus", taxonomic_level),
+       taxon = ifelse(qseqid %in% c("ASV_0608"), "Cottus", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0608"), "genus", taxonomic_level),
+       taxon = ifelse(qseqid %in% c("ASV_0272"), "Myoxocephalus", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0272"), "genus", taxonomic_level),
+       taxon = ifelse(qseqid %in% c("ASV_0236"), "Pholis laeta", taxon),
+       taxonomic_level = ifelse(qseqid %in% c("ASV_0236"), "species", taxonomic_level))
 ```
 
 ```{r}
@@ -411,8 +428,10 @@ tax_df_updated_collapsed <- tax_df_updated %>%
 ```
 
 ```{r}
-write.csv(tax_df_updated, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241112_uncollapsed.csv")
-write.csv(tax_df_updated_collapsed, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241112_collapsed.csv")
+write.csv(tax_df_updated, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241122_uncollapsed.csv")
+write.csv(tax_df_updated_collapsed, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241122_collapsed.csv")
 ```
 
+
+notes: perhaps room for improvement on Oncorhynchus ASVs from field samples (not in the asvs in mock communities)
 
