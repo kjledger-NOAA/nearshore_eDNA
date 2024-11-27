@@ -46,7 +46,7 @@ mockcom_data_wide <- mockcom_data %>%
 let me start with Hexagrammos it's present in 11 out of the 12 mock communities 
 ```{r}
 hexa <- clr_alpha %>%
-  filter(SP == "Oncorhynchus gorbuscha") %>%
+  filter(SP == "Hexagrammos") %>%
   dplyr::rename(community = calibration)
 
 hexa_join <- hexa %>%
