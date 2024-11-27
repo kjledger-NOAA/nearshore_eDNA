@@ -1,0 +1,315 @@
+---
+title: "mock_alpha_estimates"
+author: "Kimberly Ledger"
+date: "2024-09-10"
+output: html_document
+---
+
+load libraries
+```{r}
+library(tidyverse)
+library(data.table)
+library(gridExtra)
+library(ggsci)
+```
+
+# Read in the posteriors for mock communities
+```{r}
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in1_out2.Rdata")
+in1 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in2_out1.Rdata")
+in2 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in3_out2.Rdata")
+in3 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in5_out1.Rdata")
+in5 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in6_out2.Rdata")
+in6 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in7_out6.Rdata")
+in7 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in8_out1.Rdata")
+in8 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in9_out6.Rdata")
+in9 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in10_out1.Rdata")
+in10 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in11_out1.Rdata")
+in11 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in12_out7.Rdata")
+in12 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in13_out1.Rdata")
+in13 <- Output
+```
+
+
+## Pull out estimates of alpha, convert to CLR 
+```{r}
+p_space_in1 <- (exp(in1$pars$alpha) / rowSums(exp(in1$pars$alpha))) %>% as.data.frame()
+p_space_in2 <- (exp(in2$pars$alpha) / rowSums(exp(in2$pars$alpha))) %>% as.data.frame()
+p_space_in3 <- (exp(in3$pars$alpha) / rowSums(exp(in3$pars$alpha))) %>% as.data.frame()
+p_space_in5 <- (exp(in5$pars$alpha) / rowSums(exp(in5$pars$alpha))) %>% as.data.frame()
+p_space_in6 <- (exp(in6$pars$alpha) / rowSums(exp(in6$pars$alpha))) %>% as.data.frame()
+p_space_in7 <- (exp(in7$pars$alpha) / rowSums(exp(in7$pars$alpha))) %>% as.data.frame()
+p_space_in8 <- (exp(in8$pars$alpha) / rowSums(exp(in8$pars$alpha))) %>% as.data.frame()
+p_space_in9 <- (exp(in9$pars$alpha) / rowSums(exp(in9$pars$alpha))) %>% as.data.frame()
+p_space_in10 <- (exp(in10$pars$alpha) / rowSums(exp(in10$pars$alpha))) %>% as.data.frame()
+p_space_in11 <- (exp(in11$pars$alpha) / rowSums(exp(in11$pars$alpha))) %>% as.data.frame()
+p_space_in12 <- (exp(in12$pars$alpha) / rowSums(exp(in12$pars$alpha))) %>% as.data.frame()
+p_space_in13 <- (exp(in13$pars$alpha) / rowSums(exp(in13$pars$alpha))) %>% as.data.frame()
+
+
+clr_alpha_in1 <- compositions::clr(p_space_in1) %>% as.data.frame() 
+clr_alpha_in2 <- compositions::clr(p_space_in2) %>% as.data.frame() 
+clr_alpha_in3 <- compositions::clr(p_space_in3) %>% as.data.frame() 
+clr_alpha_in5 <- compositions::clr(p_space_in5) %>% as.data.frame() 
+clr_alpha_in6 <- compositions::clr(p_space_in6) %>% as.data.frame() 
+clr_alpha_in7 <- compositions::clr(p_space_in7) %>% as.data.frame() 
+clr_alpha_in8 <- compositions::clr(p_space_in8) %>% as.data.frame() 
+clr_alpha_in9 <- compositions::clr(p_space_in9) %>% as.data.frame() 
+clr_alpha_in10 <- compositions::clr(p_space_in10) %>% as.data.frame() 
+clr_alpha_in11 <- compositions::clr(p_space_in11) %>% as.data.frame() 
+clr_alpha_in12 <- compositions::clr(p_space_in12) %>% as.data.frame() 
+clr_alpha_in13 <- compositions::clr(p_space_in13) %>% as.data.frame() 
+
+colnames(clr_alpha_in1) <- in1$Species
+colnames(clr_alpha_in2) <- in2$Species
+colnames(clr_alpha_in3) <- in3$Species
+colnames(clr_alpha_in5) <- in5$Species
+colnames(clr_alpha_in6) <- in6$Species
+colnames(clr_alpha_in7) <- in7$Species
+colnames(clr_alpha_in8) <- in8$Species
+colnames(clr_alpha_in9) <- in9$Species
+colnames(clr_alpha_in10) <- in10$Species
+colnames(clr_alpha_in11) <- in11$Species
+colnames(clr_alpha_in12) <- in12$Species
+colnames(clr_alpha_in13) <- in13$Species
+
+
+clr_alpha_sum_1 <- clr_alpha_in1 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in1),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM1")  
+
+clr_alpha_sum_2 <- clr_alpha_in2 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in2),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM2")
+
+clr_alpha_sum_3 <- clr_alpha_in3 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in3),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM3")
+
+clr_alpha_sum_5 <- clr_alpha_in5 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in5),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM5")
+
+clr_alpha_sum_6 <- clr_alpha_in6 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in6),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM6")
+
+clr_alpha_sum_7 <- clr_alpha_in7 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in7),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM7")
+
+clr_alpha_sum_8 <- clr_alpha_in8 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in8),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM8")
+
+clr_alpha_sum_9 <- clr_alpha_in9 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in9),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM9")
+
+clr_alpha_sum_10 <- clr_alpha_in10 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in10),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM10")
+
+clr_alpha_sum_11 <- clr_alpha_in11 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in11),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM11")
+
+clr_alpha_sum_12 <- clr_alpha_in12 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in12),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM12")
+
+clr_alpha_sum_13 <- clr_alpha_in13 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in13),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM13")
+
+
+clr_alpha_all <- clr_alpha_sum_1 %>%
+  bind_rows(clr_alpha_sum_2) %>%
+  bind_rows(clr_alpha_sum_3) %>%
+  bind_rows(clr_alpha_sum_5) %>%
+  bind_rows(clr_alpha_sum_6) %>%
+  bind_rows(clr_alpha_sum_7) %>%
+  bind_rows(clr_alpha_sum_8) %>%
+  bind_rows(clr_alpha_sum_9) %>%
+  bind_rows(clr_alpha_sum_10) %>%
+  bind_rows(clr_alpha_sum_11) %>%
+  bind_rows(clr_alpha_sum_12) %>%
+  bind_rows(clr_alpha_sum_13) %>%
+  arrange(Mean)
+
+
+# get rid of reference species denotion
+clr_alpha_all <- clr_alpha_all %>%
+                      mutate(SP= ifelse(grepl("zRefSpecies_",species),
+                                       substr(species,13,nchar(species)),
+                                       as.character(species)))
+
+p_clr <-  ggplot(clr_alpha_all) +
+    geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
+    geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
+    #geom_point(aes(x=Mean,y=SP,fill=SP),size=3,shape=21) +
+    geom_point(aes(x=Mean,y=SP,fill=calibration),size=3,shape=21) +
+    geom_vline(xintercept=0,linetype="dashed") +
+    #scale_fill_manual(values=clr_alpha_sum$manual.col %>% as.character()) +
+    scale_x_continuous("Amplification Efficiency (CLR)") +
+    scale_y_discrete(NULL) +
+    theme_bw() +
+    theme(legend.position = "right",
+          axis.text.y = element_text(size=10))
+
+p_clr
+```
+
+
+```{r}
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks.png", width = 8, height = 5, units = "in")
+```
+
+```{r}
+write.csv(clr_alpha_all, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/clr_all_mocks.csv")
+```
+
+

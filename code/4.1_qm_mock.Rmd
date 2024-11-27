@@ -62,7 +62,7 @@ i'm going to check how well the calibration works by comparing alpha values deri
 I've settled on three subsets of mock communities to set at the "known" samples to test. 
 group1: 1,3,6,8,12,13
 group2: 2,5,6,7,10,13
-group3: 1,2,5,8,9,11                #### note to future self: maybe change group3 so it's not so similar to group 1
+group3: 1,2,5,8,9,11              
   
 ```{r}
 #set all or some mock communities as unknowns 

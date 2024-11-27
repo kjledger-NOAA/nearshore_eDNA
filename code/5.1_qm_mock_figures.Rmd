@@ -15,10 +15,10 @@ library(ggsci)
 
 # Read in the posteriors for mock communities
 ```{r}
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241119_group1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241119_group3.Rdata")
 raw <- Output
 
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group3.Rdata")
 mock1 <- Output
 ```
 
@@ -105,6 +105,11 @@ plot how each of the mock communities set as unknown performed
 # pull out just M1 for plotting
 spread=0.15
 
+#COM6
+COM6.dat <- result.dat %>%
+  filter(true.prop > 0,community=="COM6")
+COM6.dat <- bind_cols(COM6.dat, data.frame(offset= seq(-spread,spread,length.out=nrow(COM6.dat))))
+
 #COM2
 COM2.dat <- result.dat %>%
   filter(true.prop > 0,community=="COM2")
@@ -171,7 +176,10 @@ skew_plot <- function(dat,
 }
 
 
-                
+COM6_plot <- skew_plot(dat=COM6.dat,
+                           BREAKS=BREAKS,x.labs=x.labs,x.at=x.at)                 
+
+COM6_plot
 
 COM2_plot <- skew_plot(dat=COM2.dat,
                            BREAKS=BREAKS,x.labs=x.labs,x.at=x.at) 
@@ -196,7 +204,7 @@ p1 <- grid.arrange(COM2_plot + ggtitle(NULL,subtitle="COM2"),
 
 COM2_plot
 
-ggsave(COM7_plot, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates_com7.png", width = 4, height = 5, units = "in")
+#ggsave(COM7_plot, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates_com7.png", width = 4, height = 5, units = "in")
 
 #ggsave(p1, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_mockestimates.png", width = 10, height = 5, units = "in")
 ```
@@ -341,6 +349,7 @@ my_order <- c("true proportion", "raw proportion", "mock adjusted")
 temp3$method <- factor(temp3$method, levels = my_order)
 
 plot_prop <- temp3 %>%
+  filter(community == "COM6") %>%
   ggplot(aes(x=method, y=prop, fill=SP)) +
   geom_bar(stat = "identity") + 
   theme_bw() +
@@ -360,7 +369,7 @@ plot_prop <- temp3 %>%
 
 plot_prop
 
-ggsave("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_barplots.png", plot = plot_prop, width = 12, height = 6, dpi = 300)
+#ggsave("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/group1_barplots.png", plot = plot_prop, width = 12, height = 6, dpi = 300)
 ```
 
 

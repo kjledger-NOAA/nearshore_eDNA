@@ -1,0 +1,205 @@
+---
+title: "multivar on amplification efficiencies"
+output: html_document
+date: "2024-11-26"
+---
+
+
+load libraries
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(viridis)
+library(ggrepel)
+library(vegan)
+```
+
+load estimates of amplification efficiency - one estimate for each species in each mock community 
+```{r}
+clr_alpha <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/clr_all_mocks.csv") %>%
+  select(!X)
+```
+
+load starting mock community composition data 
+```{r}
+mockcom_data <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241119.csv") %>%
+  select(community, taxon, start_conc_ng) %>%
+  unique() %>%
+  filter(community != "COM4") %>%
+  filter(taxon != "Oncorhynchus") %>%
+   filter(taxon != "Oncorhynchus nerka") %>%
+   filter(taxon != "Oncorhynchus tshawytscha") %>%
+   filter(taxon != "Pleuronectidae 3")
+```
+
+pivot starting dna conc into a wide table 
+```{r}
+mockcom_data_wide <- mockcom_data %>% 
+  group_by(community) %>%
+  mutate(tot_conc = sum(start_conc_ng), 
+         prop=start_conc_ng/tot_conc) %>%
+  select(taxon, community, prop) %>%
+  pivot_wider(names_from = taxon, values_from = prop, values_fill = 0)
+```
+
+
+let me start with Hexagrammos it's present in 11 out of the 12 mock communities 
+```{r}
+hexa <- clr_alpha %>%
+  filter(SP == "Oncorhynchus gorbuscha") %>%
+  dplyr::rename(community = calibration)
+
+hexa_join <- hexa %>%
+  left_join(mockcom_data_wide)
+```
+
+#run PERMANOVA
+```{r}
+prop_dist <- vegdist(hexa_join[,-c(1:11)], method = "bray")
+adonis2(prop_dist ~ hexa_join$Mean, permutations = 999)
+
+# also run on pres/abs matrix using jaccard dist
+binary_dist <- vegdist(hexa_join[,-c(1:11)], method = "jaccard")
+adonis2(binary_dist ~ hexa_join$Mean, permutations = 999)
+```
+
+visualize with NMDS
+```{r}
+prop_mds <- metaMDS(prop_dist)
+NMS_data <- prop_mds
+
+#create vectors with the NMS attributes
+NMS_coordinates<-vegan::scores(NMS_data,display="sites")
+NMS_axes<-as.data.frame(NMS_coordinates)
+NMS_scores<-vegan::scores(NMS_data,display="species")
+
+for_ploting<-as.data.frame(cbind(NMS_coordinates, hexa_join$Mean))
+
+nmds.plot <- ggplot(for_ploting, aes(x=NMDS1, y=NMDS2))+ #sets up the plot
+  geom_point(aes(NMDS1, NMDS2, colour = V3), size = 2)+ #adds site points to plot, colour determined by amplification eff
+  coord_fixed()+
+  theme_classic()+ 
+  theme(panel.background = element_rect(fill = NA, colour = "black", size = 1, linetype = "solid"))+
+  labs(colour = "Efficiency") + 
+  theme(legend.position = "right", 
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12), 
+        axis.text = element_text(size = 10)) #+ # add legend at right of plot
+nmds.plot
+
+#let me add taxa to the NMDS on the count data 
+
+spp.fit <- envfit(NMS_data, hexa_join[,-c(1:11)], permutations = 999) # this fits species vectors
+
+spp.scrs <- as.data.frame(scores(spp.fit, display = "vectors")) #save species intrinsic values into dataframe
+spp.scrs <- cbind(spp.scrs, Species = rownames(spp.scrs)) #add species names to dataframe
+spp.scrs <- cbind(spp.scrs, pval = spp.fit$vectors$pvals) #add pvalues to dataframe so you can select species which are significant
+spp.scrs<- cbind(spp.scrs, abrev = abbreviate(spp.scrs$Species, minlength = 6)) #abbreviate species names
+sig.spp.scrs <- subset(spp.scrs, pval<=0.05) #subset data to show species significant at 0.05
+
+head(spp.scrs)
+
+nmds.plot +
+   geom_segment(data = sig.spp.scrs, aes(x = 0, xend=NMDS1, y=0, yend=NMDS2), arrow = arrow(length = unit(0.25, "cm")), colour = "grey10", lwd=0.3) + #add vector arrows of significant species
+   ggrepel::geom_text_repel(data = sig.spp.scrs, aes(x=NMDS1, y=NMDS2, label = Species), cex = 3, direction = "both", segment.size = 0.25)
+```
+
+
+
+run and plot a distance-based redundancy analysis 
+```{r}
+rda_prop <- capscale(hexa_join[,-c(1:11)] ~ hexa_join$Mean, distance = "bray")
+summary(rda_prop)
+
+anova_terms <- anova(rda_prop, by = "terms", permutations = 999)
+anova_terms 
+
+# Assuming capscale_model is already defined
+eigenvalues <- rda_prop$CA$eig
+total_inertia <- sum(eigenvalues)
+
+# Calculate proportion explained for CAP1 and CAP2
+proportion_variance <- eigenvalues / total_inertia * 100
+
+# Extract site and species scores
+site_scores <- as.data.frame(vegan::scores(rda_prop, display = "sites", choices = 1:3))
+site_scores$Sample <- hexa_join$community  # Add sample names
+
+species_scores <- as.data.frame(vegan::scores(rda_prop, display = "species", choices = 1:3))
+species_scores$Species <- rownames(species_scores)  # Add species names
+
+# Extract biplot arrows (for explanatory variables)
+biplot_arrows <- as.data.frame(vegan::scores(rda_prop, display = "bp", choices = 1:3))
+biplot_arrows$variable <- rownames(biplot_arrows)
+
+biplot_arrows <- biplot_arrows %>%
+  mutate(variable = ifelse(variable == "hexa_join$Mean", "efficiency", variable))
+
+## Plot CAP1 vs CAP2 - color sites by latitude
+plot_efficiency <- ggplot() +
+  # Plot site scores
+  geom_point(data = site_scores, aes(x = CAP1, y = MDS1, color = hexa_join$Mean), size = 3) +
+  scale_color_viridis(option = "cividis",  direction = -1) +
+  
+  # Plot species scores
+  geom_point(data = species_scores, aes(x = CAP1, y = MDS1), color = "red", size = 2) +
+  geom_text_repel(data = species_scores, aes(x = CAP1, y = MDS1, label = Species), color = "red", size = 2) +
+  
+  # Plot arrows
+  geom_segment(data = biplot_arrows, aes(x = 0, y = 0, xend = CAP1, yend = MDS1), 
+               arrow = arrow(length = unit(0.3, "cm")), color = "black") + # Plot biplot arrows
+  geom_text(data = biplot_arrows, aes(x = CAP1 * 1.1, y = MDS1 * 1.1, label = variable), color = "black") + # Label arrows
+  
+  # Add labels and theme
+  labs(title = "CAP Plot", 
+       x = paste("CAP1 (", round(proportion_variance[1], 2), "% variance explained)", sep = ""), 
+       y = paste("MDS1 (", round(proportion_variance[2], 2), "% variance explained)", sep = ""),
+       color = "amplification efficiency") +
+  theme_minimal() #+
+  #theme(legend.position = "none")
+
+plot_efficiency
+```
+
+how about a cca? 
+```{r}
+cca_prop <- cca(hexa_join[,-c(1:11)] ~ hexa_join$Mean)
+cca_prop
+
+anova(cca_prop)
+
+# Extract scores
+site_scores <- scores(cca_prop, display = "sites")
+species_scores <- scores(cca_prop, display = "species")
+
+# Convert scores to data frames for ggplot2
+site_df <- as.data.frame(site_scores)
+site_df$site <- hexa_join$community
+
+species_df <- as.data.frame(species_scores)
+species_df$species <- rownames(species_scores)  # Add species labels
+
+# Plot CCA results
+cca_plot <- ggplot() +
+  # Add site points
+  geom_point(data = site_df, aes(x = CCA1, y = CA1), color = "blue", size = 3) +
+  geom_text(data = site_df, aes(x = CCA1, y = CA1, label = site), 
+            color = "blue", vjust = -1, size = 3) +
+  # Add species points
+  geom_point(data = species_df, aes(x = CCA1, y = CA1), color = "black", size = 3) +
+  geom_text(data = species_df, aes(x = CCA1, y = CA1, label = species), 
+            color = "black", vjust = 1, size = 3) +
+  # Customize plot
+  coord_fixed() +
+  theme_classic() +
+  labs(title = "CCA Biplot", x = "CCA1", y = "CA1") +
+  theme(panel.background = element_rect(fill = NA, colour = "black", size = 1, linetype = "solid"),
+        legend.position = "none")
+
+cca_plot
+```
+
+
+
+
+could also try indicator species analysis? but that requires categorical predictor variables 
