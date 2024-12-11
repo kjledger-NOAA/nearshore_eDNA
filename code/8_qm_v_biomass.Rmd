@@ -13,7 +13,7 @@ library(ggsci)
 select <- dplyr::select
 ```
 
-# Read in the stan model outputs 
+# Read in the stan model outputs - intermediate file saved later in code - can skip to ~line 180
 ```{r}
 load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/raw_20241122.Rdata")
 raw <- Output
@@ -144,6 +144,10 @@ p_clr <-  ggplot(clr_alpha_sum) +
 p_clr
 ```
 
+```{r}
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks_combinedestimate.png", width = 8, height = 5, units = "in")
+```
+
 
 import sample metadata 
 ```{r}
@@ -177,8 +181,8 @@ save result.join
 
 read in qm results in needed 
 ```{r}
-#result.join <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/qm_results_20241125.csv") %>%
-#  select(!X)
+result.join <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/qm_results_20241125.csv") %>%
+  select(!X)
 ```
 
 
@@ -545,14 +549,25 @@ df %>%
 
 too much to look at all at once.
 
-calculate mean of qm read proportions per bay
+calculate mean of qm read proportions per bay - DO WE WANT TO DO THIS? 
+
+also going to use the RAW proportions - ie. not qm adjusted 
 ```{r}
 df_bay_means <- df_mb %>%
-  filter(method == "mock1.mean") %>%
+  #filter(method == "mock1.mean") %>%
+  filter(method == "raw.mean") %>%
   group_by(year, bay_id, habitat, SP) %>%
   summarize(mean_prop = mean(prop)) %>%
-  mutate(method = "qm_mean_of_biological_reps")
+  mutate(method = "raw_mean_of_biological_reps")
 ```
+
+do means then sum to 1? 
+```{r}
+df_bay_means %>%
+  group_by(year, bay_id, habitat) %>%
+  summarise(total = sum(mean_prop))
+```
+
 
 plot 
 ```{r}
@@ -635,25 +650,41 @@ scatterplots?
 ```{r}
 df3 <- df2 %>%
   pivot_wider(names_from = "method", values_from = "prop") %>%
-  mutate(qm = ifelse(qm_mean_of_biological_reps < 0.01, 0, qm_mean_of_biological_reps)) %>%
+  #mutate(qm = ifelse(qm_mean_of_biological_reps < 0.01, 0, qm_mean_of_biological_reps)) %>%
+  mutate(eDNA = ifelse(raw_mean_of_biological_reps < 0.01, 0, raw_mean_of_biological_reps)) %>%
   mutate(seine = ifelse(is.na(seine), 0, seine))
 ```
 
 ```{r}
 fig <- df3 %>%
-  filter(year == 2021) %>%
   ggplot() +
-  geom_point(aes(x= seine, y = qm, color = SP)) + 
+  geom_point(aes(x= seine, y = eDNA, color = SP)) + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black")  +
-  facet_wrap(~SP) +
-  xlim(0,1) +
-  ylim(0,1)
+  facet_wrap(~SP, scales = "free") #+
+  #xlim(0,1) +
+  #ylim(0,1)
 
 fig
   
-#ggsave(plot = fig, "outputs/samples_w_mocks_updated/figures/biomass_v_qm.png", dpi = 300, width = 10, height = 6)
+#ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm.png", dpi = 300, width = 10, height = 6)
+ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom.png", dpi = 300, width = 10, height = 6)
 ```
 
+```{r}
+fig2 <- df3 %>%
+  ggplot() +
+  geom_point(aes(x= seine, y = eDNA, color = habitat)) + 
+  theme_bw() + 
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black")  +
+  facet_wrap(~SP, scales = "free") +
+  scale_x_continuous(limits = c(0, NA)) +  # Limit x-axis to non-negative values
+  scale_y_continuous(limits = c(0, NA)) #+  # Limit y-axis to non-negative values
+  #xlim(0,1) +
+  #ylim(0,1)
 
+fig2
+  
+ggsave(plot = fig2, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_by_habitat.png", dpi = 300, width = 10, height = 6)
+```
 
