@@ -12,69 +12,20 @@ library(dplyr)
 rename <- dplyr::rename
 ```
 
-first, i'm going to compare the mock community asvs from the filtered.seqTab output and the decontaminated output (just out of curiosity)
-
-
-load ASV table and metadata - this the output from dadasnake
-```{r}
-asv_table <- readRDS("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/filtered.seqTab.RDS") %>%
-  select(!Row.names)
-
-#transpose 
-asv_table <- data.frame(t(asv_table))
-
-#set column names to be ASV# 
-colnames(asv_table) <- asv_table["ASV",]
-
-#remove row that has ASV#
-asv_table <- asv_table[!rownames(asv_table) %in% c('ASV'), ]
-
-#make sure reads are numbers
-# Convert all character columns to numeric
-for (col in names(asv_table)) {
-  asv_table[[col]] <- as.numeric(asv_table[[col]])
-}
-
-#make make sample ID a column 
-asv_table$Sample_ID <- rownames(asv_table)
-
-asv_table <- asv_table %>%
-  select(Sample_ID, everything()) %>%
-  mutate(Sample_ID = str_replace(Sample_ID, "^COM-", "COM"))
-```
-
-filter asv table to just include the mock community samples 
-```{r}
-asv_first <- which(startsWith(names(asv_table), "ASV"))[1]
-asv_last <- ncol(asv_table)
-
-mock_table_original <- asv_table %>%
-  filter(grepl("COM", Sample_ID)) %>%
-  pivot_longer(cols = c(asv_first:asv_last), names_to = "ASV", values_to = "reads") %>%
-  filter(reads > 0)
-```
 
 load decontaminated reads 
 ```{r}
-decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/decontaminated_asv_table.csv") %>%
+decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/decontaminated_asv_table.csv") %>%
   select(!X) %>%
   filter(grepl("COM", Sample_ID)) %>%
   select(!sample_type) %>%
   filter(reads > 0)
 ```
 
-anti-join tables 
-```{r}
-comparison <- mock_table_original %>%
-  full_join(decontaminated_table, by = c("Sample_ID", "ASV"))
-```
-
-alright, going to use the decontaminated read output!
-
 load mock community metadata
 ```{r}
 #read in some sample metadata to work with 
-mock_metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/nearshore_mock_compositions_w_conc.csv") %>%
+mock_metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/nearshore_mock_compositions_w_conc.csv") %>%
   mutate(replicate = "expected") %>%
   mutate(sample_ID = paste0(Community_ID, "-E")) %>%
   group_by(Community_ID) %>%
@@ -92,7 +43,8 @@ mock_metadata <- mock_metadata %>%
 
 assign asv's to taxons 
 ```{r}
-taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241112_collapsed.csv") %>%
+#taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241112_collapsed.csv") %>%
+taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/taxonomy_20250110_collapsed.csv") %>%
   select(!X) %>%
   select(qseqid, taxon) %>%
   unique() %>%
@@ -134,39 +86,13 @@ asvs_in_mocks <- mock_taxons %>%
   summarise(tot_reads = sum(reads))
 ```
 
-## i also ran blastn on the filtered.seqs.fasta against a reference db with just the mock community species 
-```{r}
-mock_assignments <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mockdb_taxonomy.csv") %>%
-  select(!X) %>%
-  rename(ASV = qseqid)
-```
-
-compare 
-```{r}
-asvs_in_mocks <- asvs_in_mocks %>%
-  left_join(mock_assignments)
-```
-
-```{r}
-asvs_in_mocks <- asvs_in_mocks %>%
-  filter(ASV != "ASV_0610") %>%         ## remove the asvs that don't belong 
-  filter(ASV != "ASV_0864") %>% 
-  filter(ASV != "ASV_0853") %>%
-  select(ASV, taxon, tot_reads)
-
-#write.csv(asvs_in_mocks, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/asvs_in_mocks.csv")
-```
-
-
-
-very similar, going to continue with the blastn taxonomic assignments
-
 reformat and join the mock reads with expected mock values 
 ```{r}
 mock_table <- mock_taxons %>%
   filter(ASV != "ASV_0610") %>%         ## remove the asvs that don't belong 
   filter(ASV != "ASV_0864") %>% 
   filter(ASV != "ASV_0853") %>%
+  filter(ASV != "ASV_0865") %>%
   separate(Sample_ID, into = c("Community_ID", "replicate"), sep = "-", remove = FALSE) %>%
   group_by(Sample_ID, Community_ID, replicate, taxon) %>%
   summarize(reads = sum(reads)) %>%
@@ -195,7 +121,7 @@ mock_export <- mock_table %>%
   left_join(mock_start) %>%
   mutate(start_conc_ng = ifelse(is.na(start_conc_ng), 0, start_conc_ng))
 
-#write.csv(mock_export, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241119.csv", row.names = F)
+#write.csv(mock_export, "/home/kimberly.ledger/nearshore_eDNA/outputs/ns_mock_20241119.csv", row.names = F)
 ```
 
 plot the mock community reads counts

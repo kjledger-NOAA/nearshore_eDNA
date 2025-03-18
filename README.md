@@ -1,33 +1,31 @@
-# nearshore eDNA metabarcoding analysis 
+# A case for multi-gear assessments: catchability of nearshore fish varies among habitat and species when sampling with eDNA and nets  
 
-this repo contains metabarcoding analyses of mock community and environmental samples for XXXX (citation)
+## Overview 
 
-MiSeq sequencing notes: 
-- 2021 and 2022 field samples: july 1 2024
-- mock comms 1 thru 10: august 20 2024
-- mock comms 11 thru 13: october 16 2024
+This repo contains metabarcoding analyses of mock community and environmental samples
 
+### 1. mifish metabarcoding data generation 
 
+amplicon sequences were generated across three MiSeq runs: 
+* 2021 and 2022 field samples: july 1 2024
+* mock communities 1 thru 10: august 20 2024
+* mock communities 11 thru 13: october 16 2024
 
-eDNA metabarcoding meeting [notes](https://docs.google.com/document/d/1Rp4ZUWfbEIUR9bBEf40BQqtvNvOP0KSQv7GWAV4t0I0/edit#heading=h.eb0y8t2ced3x)
+### 2. pre-processing 
 
-mock community [species list](https://drive.google.com/drive/folders/1ngmfKEM3wCmhXcM7XOED4ukvpCMr1ZvT) and [fastas](https://drive.google.com/drive/folders/1ngmfKEM3wCmhXcM7XOED4ukvpCMr1ZvT) (note: these include a few extra species that will not be used for this project)
+step 1: combined all raw sequencing reads (mock communities and eDNA samples) into a single folder and created sample sheet. uploaded folder to HPCC.
 
-notes from 11/8/2024:
-- added additional mock community samples to rawdata on sedna (20260701_nearshore_mifish)
-- ran initial data processing steps on all field samples and mock communities using "config.nearshore.mifish.yaml" and stored output in "dadasnake/nearshore_w_mock_mifish_updated_20241106"
-- and ran blastn against the ncbi nt db on sedna and stored output in "blast/nearshore_mifish_20241106"
+step 2: processed samples using dadasnake (config.nearshore.mifish.yaml) and saved output in 'dadasnake/nearshore_w_mock_mifish_updated_20241106'
 
-- assigned taxonomy using "1_taxonomic_assignment_blastn.Rmd"
-- cleaned up pcr replicates and asv's using "2_decontamination.Rmd" 
-- also assigned taxonomy by comparing sequences to just fastas of the mock community species using "1.5_taxonomic_assignment_mockdb.Rmd"
-- explored mock community samples and exported file for quantitative metabarcoding evaluation of mock communities - "3_mockcommunities.Rmd"
-- ran qm models with different subsets of mock communities set to be true - "4_quantitativemetabarcoding_mock.Rmd"
-- explored qm of mock communities in "5_qm_mock_figures.Rmd" and amplification efficiencies in "6_qm_mock_alpha.Rmd"
+step 3: ran blastn against the ncbi nt db on sedna and stored output in 'blast/nearshore_mifish_20241106'
 
-- exploring field samples (no qm adjustments yet) in "7_fieldsamples.Rmd"
+### 3. R code 
 
-notes from 1/10/24:
-- updated the taxonomic assignment to remove nested assignments (ie. the same species or genus contributing to multiple genus or family assignments)
-
-
+* *1_taxonomic_assignment_blastn.Rmd* - This code takes the blastn output and determines the taxonomic assignment of each ASV    
+* *2_decontamination.Rmd* - This code accounts for tag-jumping, removes ASVs without taxonomic assignment, removes ASVs that don't show up in non-controls, and discards low read depth replicates based on ASV accumulation curve (for eDNA samples only)   
+* *3_mockcommunities.Rmd* - This code formats expected mock community species compositions with the observed species proportions and makes some exploratory plots of mock community samples   
+* *4_qm_mock_testing_efficiencies.Rmd* - This code runs the quantitative metabarcoding model from Shelton et al. 2023 to calculate each mock communities' species specific amplification efficiencies 
+* *5_ind_alpha.Rmd* - This code pulls out alpha from each qm mock community model and plots   
+* *6_qm_fieldsamples.Rmd* - This code runs the quantitative metabarcoding model from Shelton et al. 2023 using all mock communities as known inputs to adjust read proportions of environmental samples   
+* *7_qm_field_plots.Rmd* - This code plots amplification efficiency estimates when all mock communities are known inputs. Also makes some exploratory plots looking at read proportions   
+* *8_fieldsample_summary.Rmd* - This code converts decontaminated ASV table to taxon table for field samples and calculates simple mean proportions across technical replicates    

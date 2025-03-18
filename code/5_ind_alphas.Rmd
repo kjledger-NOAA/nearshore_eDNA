@@ -15,29 +15,29 @@ library(ggsci)
 
 # Read in the posteriors for mock communities
 ```{r}
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in1_out2.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in1_out2.Rdata")
 in1 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in2_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in2_out1.Rdata")
 in2 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in3_out2.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in3_out2.Rdata")
 in3 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in5_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in5_out1.Rdata")
 in5 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in6_out2.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in6_out2.Rdata")
 in6 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in7_out6.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in7_out6.Rdata")
 in7 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in8_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in8_out1.Rdata")
 in8 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in9_out6.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in9_out6.Rdata")
 in9 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in10_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in10_out1.Rdata")
 in10 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in11_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in11_out1.Rdata")
 in11 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in12_out7.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in12_out7.Rdata")
 in12 <- Output
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241126_in13_out1.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in13_out1.Rdata")
 in13 <- Output
 ```
 
@@ -287,9 +287,14 @@ clr_alpha_all <- clr_alpha_all %>%
                                        substr(species,13,nchar(species)),
                                        as.character(species)))
 
+# Reorder categories numerically
+clr_alpha_all$calibration <- as.factor(clr_alpha_all$calibration)
+levels(clr_alpha_all$calibration) <- c("COM1", "COM2",  "COM3",  "COM5",  "COM6",  "COM7",  "COM8",  "COM9", "COM10", "COM11", "COM12", "COM13") 
+
 p_clr <-  ggplot(clr_alpha_all) +
     geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
-    geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
+    #geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
+    geom_errorbarh(aes(xmin=q.05,xmax=q.95,y=SP),size=0.8,height=0) +
     #geom_point(aes(x=Mean,y=SP,fill=SP),size=3,shape=21) +
     geom_point(aes(x=Mean,y=SP,fill=calibration),size=3,shape=21) +
     geom_vline(xintercept=0,linetype="dashed") +
@@ -298,18 +303,19 @@ p_clr <-  ggplot(clr_alpha_all) +
     scale_y_discrete(NULL) +
     theme_bw() +
     theme(legend.position = "right",
-          axis.text.y = element_text(size=10))
+          axis.text.y = element_text(size=10)) +
+  labs(fill = "mock community")
 
 p_clr
 ```
 
 
 ```{r}
-ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks.png", width = 8, height = 5, units = "in")
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/clr_all_mocks.png", width = 8, height = 5, units = "in")
 ```
 
 ```{r}
-write.csv(clr_alpha_all, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/clr_all_mocks.csv")
+#write.csv(clr_alpha_all, "/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/clr_all_mocks.csv")
 ```
 
 

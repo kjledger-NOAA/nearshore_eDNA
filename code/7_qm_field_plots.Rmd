@@ -15,10 +15,10 @@ select <- dplyr::select
 
 # Read in the stan model outputs - intermediate file saved later in code - can skip to ~line 180
 ```{r}
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/raw_20241122.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/raw_20241122.Rdata")
 raw <- Output
 
-load("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/mock_20241122.Rdata")
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/mock_20241122.Rdata")
 mock1 <- Output 
 ```
 
@@ -145,13 +145,13 @@ p_clr
 ```
 
 ```{r}
-ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks_combinedestimate.png", width = 7, height = 5, units = "in")
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/clr_all_mocks_combinedestimate.png", width = 7, height = 5, units = "in")
 ```
 
 
 import sample metadata 
 ```{r}
-metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/nearshore_field_metadata.csv") %>%
+metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/nearshore_field_metadata.csv") %>%
   dplyr::rename(community = extraction_ID) %>%
   filter(sample_type == "sample") %>%
   select(community, alternative_ID, collection_year, bay_id, habitat)
@@ -176,12 +176,12 @@ result.join <- result.join %>%
 
 save result.join
 ```{r}
-#write.csv(result.join, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/qm_results_20241125.csv")
+#write.csv(result.join, "/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/qm_results_20241125.csv")
 ```
 
 read in qm results in needed 
 ```{r}
-result.join <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/qm_results_20241125.csv") %>%
+result.join <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/qm_results_20241125.csv") %>%
   select(!X)
 ```
 
@@ -329,7 +329,7 @@ all.distances.to.plot %>%
 
 load biomass data to compare w/ qm read proportions 
 ```{r}
-biomass <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/seine_biomass_at_edna_sites.csv") %>%
+biomass <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/seine_biomass_at_edna_sites.csv") %>%
   select(!X)
 
 unique(biomass$species_scientific)
@@ -681,10 +681,8 @@ fig <- df3 %>%
 
 fig
   
-#ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm.png", dpi = 300, width = 10, height = 6)
-#ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom.png", dpi = 300, width = 10, height = 6)
-ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom_95IQR.png", dpi = 300, width = 10, height = 6)
 
+ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/biomass_v_qm_zoom_95IQR.png", dpi = 300, width = 10, height = 6)
 ```
 
 ```{r}
@@ -702,6 +700,6 @@ fig2 <- df3 %>%
 
 fig2
   
-#ggsave(plot = fig2, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_by_habitat.png", dpi = 300, width = 10, height = 6)
+#ggsave(plot = fig2, "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/biomass_v_qm_by_habitat.png", dpi = 300, width = 10, height = 6)
 ```
 

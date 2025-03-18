@@ -1,5 +1,5 @@
 ---
-title: "6_all taxa in fieldsamples"
+title: "all taxa in fieldsamples"
 output: html_document
 date: "2024-11-13"
 ---
@@ -15,20 +15,20 @@ rename <- dplyr::rename
 
 load decontaminated reads and filter to retain just the field samples 
 ```{r}
-decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/decontaminated_asv_table.csv") %>%
+decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/decontaminated_asv_table.csv") %>%
   select(!X) %>%
   filter(reads > 0)
 ```
 
 load sample metadata
 ```{r}
-metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/nearshore_metadata.csv") %>%
+metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/nearshore_metadata.csv") %>%
   rename(Sample_ID = sample_ID)
 ```
 
 assign asv's to taxons 
 ```{r}
-taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20250110_collapsed.csv") %>%
+taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/taxonomy_20250110_collapsed.csv") %>%
   select(!X) %>%
   select(qseqid, taxon) %>%
   unique() %>%
@@ -50,11 +50,6 @@ taxon_read_summary <- decon_table_w_tax %>%
   pivot_wider(names_from = sample_type, values_from = total_reads, values_fill = 0)
 ```
 
-```{r}
-#write.csv(taxon_read_summary, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_readcounts.csv")
-```
-
-
 convert to taxon table 
 ```{r}
 taxon_table <- decon_table_w_tax %>%
@@ -62,7 +57,6 @@ taxon_table <- decon_table_w_tax %>%
   mutate(reads = as.integer(reads)) %>%
   pivot_wider(names_from = taxon, values_from = reads, values_fn = sum, values_fill = 0)
 ```
-
 
 calculate proportion of reads per taxa in each technical/PCR replicate 
 ```{r}
@@ -103,7 +97,5 @@ bottle_prop_w_meta %>%
 
 export
 ```{r}
-write.csv(bottle_prop_w_meta, "~/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/all_taxa_simple_20250110.csv")
+write.csv(bottle_prop_w_meta, "~/nearshore_eDNA/outputs/all_taxa_simple_20250110.csv")
 ```
-
-

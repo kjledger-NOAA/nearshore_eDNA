@@ -1,15 +1,11 @@
 ---
-title: "Quantitative metabarcoding of AK nearshore mock community samples"
+title: "Quantitative metabarcoding of AK nearshore field samples"
 author:"Kimberly Ledger"
 date: "2024-11-13"
 output: github_document
 ---
 
-this code is using the gblock mock communities from the 20240820 miseq run. and nov miseq run. 
-input is updated (nov 2024) taxonomic assignment, etc 
-
-things to do:
-- compare estimated alpha's (amplification efficiency) using different mock communities as the reference
+this code is using the gblock mock communities to correct for amplification biases in the nearshore eDNA field samples
 
 libraries
 ```{r}
@@ -22,7 +18,7 @@ library(rstan)
 
 load mock community data
 ```{r}
-mockcom_data <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241119.csv") %>%
+mockcom_data <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/ns_mock_20241119.csv") %>%
   mutate(tech_rep = as.factor(tech_rep),   ## i changed this from as.numeric to as.factor because of my rep format
          Cycles = as.numeric(Cycles)) %>%
   filter(start_conc_ng > 0) %>%   ## remove any reads belonging to species NOT in the mock community - think about whether this is the best approach or if i should do some "decontamination" steps to all the mock community reads 
@@ -48,8 +44,6 @@ sp.by.comm <- mockcom_data %>% filter(Cycles==35) %>%
   mutate(tot_conc = sum(conc),prop=conc/tot_conc)
 ```
 
-i'm going to check how well the calibration works by comparing alpha values derived from different subsets of mock community data as true and unknown. 
-
 #REQUIRED FORMAT
 #environmental (i.e., unknown) samples with the following column names:
   #community  -- the unique biological sample from which a set of sequences derived
@@ -59,19 +53,70 @@ i'm going to check how well the calibration works by comparing alpha values deri
   #Cycles -- number of PCR cycles the reaction underwent
   
   
-I've settled on three subsets of mock communities to set at the "known" samples to test. 
-group1: 1,3,6,8,12,13
-group2: 2,5,6,7,10,13
-group3: 1,2,5,8,9,11              
+load field samples 
+```{r}
+decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/decontaminated_asv_table.csv") %>%
+  select(!X) %>%
+  filter(sample_type == "sample") %>%
+  filter(reads > 0)
+```
+
+assign asv's to taxons 
+```{r}
+taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/taxonomy_20250110_collapsed.csv") %>%
+  select(!X) %>%
+  select(qseqid, taxon) %>%
+  unique() %>%
+  rename(ASV = qseqid) 
+```
+
+join to decontaminated ASV table
+```{r}
+decon_table_w_tax <-  decontaminated_table %>%
+  left_join(taxonomy, by = "ASV")
+```
+
+remove ASV IDs and group by taxon 
+```{r}
+taxon_table <- decon_table_w_tax %>%
+  group_by(Sample_ID, taxon) %>%
+  summarise(nReads = sum(reads)) %>%
+  mutate(nReads = as.integer(nReads)) %>%
+  separate(Sample_ID, into = c("community", "tech_rep")) %>%
+  rename(Species = taxon) %>%
+  mutate(Cycles = 35) %>%
+  mutate(tech_rep = ifelse(tech_rep == "A", "1", tech_rep)) %>%
+  mutate(tech_rep = ifelse(tech_rep == "B", "2", tech_rep)) %>%
+  mutate(tech_rep = ifelse(tech_rep == "C", "3", tech_rep)) %>%
+  mutate(tech_rep = as.integer(tech_rep))
+
+# Check for samples missing pcr_replicate 1
+missing_replicate1 <- taxon_table %>%
+  group_by(community) %>%
+  filter(!1 %in% tech_rep) %>%
+  select(community, tech_rep) %>%
+  unique() %>%
+  filter(tech_rep == 3)  ## will just change the 3's to be 1's 
+
+# now mutate rows
+taxon_table_temp <- taxon_table %>%
+  mutate(tech_rep = ifelse(paste(community, tech_rep) %in% paste(missing_replicate1$community, missing_replicate1$tech_rep), 1L, tech_rep))
+
+# Check for samples missing pcr_replicate 1
+missing_replicate1_again <- taxon_table_temp%>%
+  group_by(community) %>%
+  filter(!1 %in% tech_rep)
+
+#okay good, now renaming df
+taxon_table <- taxon_table_temp
+```
+
   
 ```{r}
-#set all or some mock communities as unknowns 
-env <- mockcom_data %>%  
-  #filter(community %in% c("COM2", "COM3", "COM4", "COM5", "COM6", "COM7","COM8", "COM9", "COM10", "COM11", "COM12", "COM13")) %>%  
-  filter(!community %in% c("COM1", "COM3", "COM6", "COM8", "COM12","COM13")) %>%  
-  rename(Species = taxon)
+taxon_table_formatted <- taxon_table %>%
+  mutate(start_conc_ng = NA) 
   
-env <- env %>%  
+env <- taxon_table_formatted %>%  
   group_by(community, tech_rep) %>% 
   mutate(propReads = nReads/sum(nReads), #calculate proportion of reads
           totReads = sum(nReads)) %>%  #calculate total reads for community
@@ -103,10 +148,13 @@ mock community (i.e., known) samples with the following column names:
 
 ```{r}
 #set up mock community samples
-mc <- mockcom_data %>%  
-    #filter(!community %in% c("COM2", "COM3", "COM4", "COM5", "COM6", "COM7","COM8", "COM9", "COM10", "COM11", "COM12", "COM13")) %>%  
-    filter(community %in% c("COM1", "COM3", "COM6", "COM8", "COM12","COM13")) %>%  
-    rename("Species" = "taxon")  #mock comm samples
+mc <- mockcom_data %>%
+  mutate(tech_rep = ifelse(tech_rep == "A", "1", tech_rep)) %>%
+  mutate(tech_rep = ifelse(tech_rep == "B", "2", tech_rep)) %>%
+  mutate(tech_rep = ifelse(tech_rep == "C", "3", tech_rep)) %>%
+  mutate(tech_rep = as.integer(tech_rep)) %>%
+  rename("Species" = "taxon") #mock comm samples
+  
 mc$Species[mc$Species == mostCommon] <- paste0("zRefSpecies_", mostCommon)   #make the most common species the reference species
   
 # Filter so that you only keep species in the environment samples that are in the mock community.
@@ -159,7 +207,7 @@ sum(!env$Species %in% unique(mc$Species)) # this had better be zero.
       arrange(sp_idx) %>% 
       pivot_wider(names_from = "sp_idx", values_from = "nReads", values_fill = 0) 
     
-    sample_data_small <- sample_data %>% filter(tech_rep== "A")
+    sample_data_small <- sample_data %>% filter(tech_rep== "1")
     
     mock_data <- mc %>% 
       ungroup() %>% 
@@ -167,7 +215,7 @@ sum(!env$Species %in% unique(mc$Species)) # this had better be zero.
       arrange(sp_idx) %>% 
       pivot_wider(names_from = "sp_idx", values_from = "nReads", values_fill = 0)
 
-    mock_data_small <- mock_data %>% filter(tech_rep== "A")
+    mock_data_small <- mock_data %>% filter(tech_rep== "1")
 ```
 
 
@@ -185,7 +233,7 @@ p_mock <- mc %>%
   #select(-community)
 
 p_mock_small <- mc %>%
-  filter(tech_rep == "A") %>%
+  filter(tech_rep == "1") %>%
   select(community, sp_idx, start_conc_ng, Cycles) %>%
   arrange(sp_idx) %>%
   group_by(community) %>%
@@ -398,7 +446,7 @@ Output <- list(
 ```
 
 ```{r}
-save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/raw_20241119_group1",".Rdata"))
+save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/raw_20241122",".Rdata"))
 ```
 
 
@@ -613,5 +661,5 @@ Output <- list(
 ```
 
 ```{r}
-save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/mock_quant/mock_20241119_group1",".Rdata"))
+save(Output,file=paste0("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_field_samples/mock_20241122",".Rdata"))
 ```

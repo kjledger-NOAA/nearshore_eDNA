@@ -21,7 +21,7 @@ library(rstan)
 
 load mock community data
 ```{r}
-mockcom_data <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/ns_mock_20241119.csv") %>%
+mockcom_data <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/ns_mock_20241119.csv") %>%
   mutate(tech_rep = as.factor(tech_rep),   ## i changed this from as.numeric to as.factor because of my rep format
          Cycles = as.numeric(Cycles)) %>%
   filter(start_conc_ng > 0) %>%   ## remove any reads belonging to species NOT in the mock community - think about whether this is the best approach or if i should do some "decontamination" steps to all the mock community reads 
@@ -56,11 +56,8 @@ i'm going to check how well the calibration works by comparing alpha values deri
   #nReads -- the number of reads assigned to that species in that community
   #tech_rep -- index of technical replicate, within community (e.g., if each community is sequenced 3 times, tech_rep will vary between 1 and 3)
   #Cycles -- number of PCR cycles the reaction underwent
-  
 
-if com1 is the training data, will the amplification estimate (alpha) be the same regardless of what community is the testing data? i would think so. let me check. - YES THAT"S TRUE
-
-now run each community as the single mock community and have com1 as env 
+now run each community as the single mock community for truth and another as env (just to fill out the model df)  
 
 ```{r}
 mockcom_data <- mockcom_data %>%

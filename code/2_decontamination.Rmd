@@ -18,13 +18,13 @@ library(reshape2)
 
 load sample metadata
 ```{r}
-metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/nearshore_metadata.csv") %>%
+metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/nearshore_metadata.csv") %>%
   rename(Sample_ID = sample_ID)
 ```
 
 check sequence table outputs
 ```{r}
-asv_table <- readRDS("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/filtered.seqTab.RDS") %>%
+asv_table <- readRDS("/home/kimberly.ledger/nearshore_eDNA/data/filtered.seqTab.RDS") %>%
   select(!Row.names)
 
 #transpose 
@@ -68,8 +68,6 @@ step 1: tag-jumping: subtract the proportion of reads that jumped into the posit
 step 2: remove ASVs that don't get a fish taxonomic assignment 
 step 3: remove any ASVs that don't show up in field samples 
 step 4: remove low read depth samples based on ASV accumulation curve  
-step 5: check dissimilarity across PCR replicates and remove any replicates with high dissimilarity 
-
 
 ## Step 1. Account for tag-jumping by using the positive controls 
 
@@ -141,17 +139,12 @@ decontaminated_1 <- indexhop_table %>%
 ## Step 2. Remove ASVs that don't get a fish taxonomic assignment  
 
 ```{r}
-taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20250110_collapsed.csv") %>%
+taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/taxonomy_20250110_collapsed.csv") %>%
   select(!X) %>%
   rename(ASV = qseqid)
 
-##remove the ASVs that got a Micropterus tax assignment 
-micropterus <- taxonomy %>% 
-  filter(taxon == "Micropterus")
-
 asv_table_filter2 <- asv_table_filter1 %>%
-  filter(ASV %in% taxonomy$ASV) %>%
-  filter(!ASV %in% micropterus$ASV)
+  filter(ASV %in% taxonomy$ASV) 
 ```
 
 
@@ -197,7 +190,7 @@ asv_table_wide <- asv_table_wide %>%
 
 ## plots the figure
 rarecurve(asv_table_wide, step = 20, col = "blue", label = FALSE, 
-          main = "Sequencing Effort Curves",
+          main = "ASV Accumulation Curve",
           xlab = "Sequencing Depth", ylab = "Number of ASVs Identified",
           xlim = c(0,5000))
 ```
@@ -232,5 +225,5 @@ asv_table_filter4 <- asv_table_filter3 %>%
 ```
 
 ```{r}
-write.csv(asv_table_filter4, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/decontaminated_asv_table.csv")
+write.csv(asv_table_filter4, "/home/kimberly.ledger/nearshore_eDNA/outputs/decontaminated_asv_table.csv")
 ```
