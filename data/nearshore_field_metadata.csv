@@ -1,0 +1,171 @@
+extraction_ID,alternative_ID,collection_year,collection_month,collection_day,bay_id,habitat,location1,location3,longitude,latitude,sample_type,time_of_day,project,collected_by,extraction_by,extraction_date,plate_or_vial,extraction_plate_ID,extraction_well_ID
+e00289,2021_SYLB_A_1,2021,6,8,SYLB_A,eelgrass,Sylburn harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00290,2021_SYLB_A_2,2021,6,8,SYLB_A,eelgrass,Sylburn harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00291,2021_SYLB_A_3,2021,6,8,SYLB_A,eelgrass,Sylburn harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00292,2021_SYLB_A_4,2021,6,8,SYLB_A,eelgrass,Sylburn harbor eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00293,2021_SYLB_B_1,2021,6,9,SYLB_B,kelp,Sylburn harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00294,2021_SYLB_B_2,2021,6,9,SYLB_B,kelp,Sylburn harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00295,2021_SYLB_B_3,2021,6,9,SYLB_B,kelp,Sylburn harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00296,2021_SYLB_B_4,2021,6,9,SYLB_B,kelp,Sylburn harbor kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00297,2021_REEF_A_1,2021,6,10,REEF_A,eelgrass,Reef harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00298,2021_REEF_A_2,2021,6,10,REEF_A,eelgrass,Reef harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00299,2021_REEF_A_3,2021,6,10,REEF_A,eelgrass,Reef harbor eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00300,2021_REEF_A_4,2021,6,10,REEF_A,eelgrass,Reef harbor eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00301,2021_REEF_B_1,2021,6,13,REEF_B,kelp,Reef harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00302,2021_REEF_B_2,2021,6,13,REEF_B,kelp,Reef harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00303,2021_REEF_B_3,2021,6,13,REEF_B,kelp,Reef harbor kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00304,2021_REEF_B_4,2021,6,13,REEF_B,kelp,Reef harbor kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00305,2021_KAHS_A_1,2021,6,11,KAHS_A,eelgrass,Kah shakes eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00306,2021_KAHS_A_2,2021,6,11,KAHS_A,eelgrass,Kah shakes eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00307,2021_KAHS_A_3,2021,6,11,KAHS_A,eelgrass,Kah shakes eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00308,2021_KAHS_A_4,2021,6,11,KAHS_A,eelgrass,Kah shakes eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00309,2021_KAHS_B_1,2021,6,12,KAHS_B,kelp,Kah shakes kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00310,2021_KAHS_B_2,2021,6,12,KAHS_B,kelp,Kah shakes kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00311,2021_KAHS_B_3,2021,6,12,KAHS_B,kelp,Kah shakes kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00312,extraction_blank,2021,,,,,,,,,extraction_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00313,2021_KAHS_B_4,2021,6,12,KAHS_B,kelp,Kah shakes kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00314,2021_DALL_A_1,2021,6,14,DALL_A,eelgrass,Dall bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00315,2021_DALL_A_2,2021,6,14,DALL_A,eelgrass,Dall bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00316,2021_DALL_A_3,2021,6,14,DALL_A,eelgrass,Dall bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00317,2021_DALL_A_4,2021,6,14,DALL_A,eelgrass,Dall bay eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00318,2021_DALL_B_1,2021,6,15,DALL_B,kelp,Dall bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00319,2021_DALL_B_2,2021,6,15,DALL_B,kelp,Dall bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00320,2021_DALL_B_3,2021,6,15,DALL_B,kelp,Dall bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00321,2021_DALL_B_4,2021,6,15,DALL_B,kelp,Dall bay kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00322,2021_MOIR_A_1,2021,6,22,MOIR_A,eelgrass,Moira sound eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00323,2021_MOIR_A_2,2021,6,22,MOIR_A,eelgrass,Moira sound eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00324,2021_MOIR_A_3,2021,6,22,MOIR_A,eelgrass,Moira sound eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00325,2021_MOIR_A_4,2021,6,22,MOIR_A,eelgrass,Moira sound eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00326,2021_MOIR_B_1,2021,6,23,MOIR_B,kelp,Moira sound kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00327,2021_MOIR_B_2,2021,6,23,MOIR_B,kelp,Moira sound kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00328,2021_MOIR_B_3,2021,6,23,MOIR_B,kelp,Moira sound kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00329,2021_MOIR_B_4,2021,6,23,MOIR_B,kelp,Moira sound kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00330,2021_NICH_A_1,2021,6,26,NICH_A,eelgrass,Nichols bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00331,2021_NICH_A_2,2021,6,26,NICH_A,eelgrass,Nichols bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00332,2021_NICH_A_3,2021,6,26,NICH_A,eelgrass,Nichols bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00333,2021_NICH_A_4,2021,6,26,NICH_A,eelgrass,Nichols bay eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00334,2021_NICH_B_1,2021,6,25,NICH_B,kelp,Nichols bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00335,2021_NICH_B_2,2021,6,25,NICH_B,kelp,Nichols bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00336,extraction_blank,2021,,,,,,,,,extraction_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_18,,,
+e00337,2021_NICH_B_3,2021,6,25,NICH_B,kelp,Nichols bay kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00338,2021_NICH_B_4,2021,6,25,NICH_B,kelp,Nichols bay kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00339,2021_TAHB_A_1,2021,6,27,TAHB_A,eelgrass,Tah bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00340,2021_TAHB_A_2,2021,6,27,TAHB_A,eelgrass,Tah bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00341,2021_TAHB_A_3,2021,6,27,TAHB_A,eelgrass,Tah bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00342,2021_TAHB_A_4,2021,6,27,TAHB_A,eelgrass,Tah bay eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00343,2021_HUNT_A_1,2021,6,28,HUNT_A,eelgrass,Hunter bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00344,2021_HUNT_A_2,2021,6,28,HUNT_A,eelgrass,Hunter bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00345,2021_HUNT_A_3,2021,6,28,HUNT_A,eelgrass,Hunter bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00346,2021_HUNT_A_4,2021,6,28,HUNT_A,eelgrass,Hunter bay eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00347,2021_KLWA_A_1,2021,8,6,KLWA_A,eelgrass,Klawock airport eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00348,2021_KLWA_A_2,2021,8,6,KLWA_A,eelgrass,Klawock airport eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00349,2021_KLWA_A_3,2021,8,6,KLWA_A,eelgrass,Klawock airport eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00350,2021_KLWA_A_4,2021,8,6,KLWA_A,eelgrass,Klawock airport eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00351,2021_BTRB_A_1,2021,8,7,BTRB_A,eelgrass,Big Tree bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00352,2021_BTRB_A_2,2021,8,7,BTRB_A,eelgrass,Big Tree bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00353,2021_BTRB_A_3,2021,8,7,BTRB_A,eelgrass,Big Tree bay eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00354,2021_BTRB_A_4,2021,8,7,BTRB_A,eelgrass,Big Tree bay eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00355,2021_CLAM_A_1,2021,8,8,CLAM_A,mixed,Clam island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00356,2021_CLAM_A_2,2021,8,8,CLAM_A,mixed,Clam island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00357,2021_CLAM_A_3,2021,8,8,CLAM_A,mixed,Clam island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00358,2021_CLAM_A_4,2021,8,8,CLAM_A,mixed,Clam island mixed,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00359,2021_NFEI_B_1,2021,8,9,NFEI_B,mixed,Cole island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00360,extraction_blank,2021,,,,,,,,,extraction_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00361,2021_NFEI_B_2,2021,8,9,NFEI_B,mixed,Cole island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00362,2021_NFEI_B_3,2021,8,9,NFEI_B,mixed,Cole island mixed,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00363,2021_NFEI_B_4,2021,8,9,NFEI_B,mixed,Cole island mixed,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00364,2021_BOST_A_1,2021,8,12,BOST_A,eelgrass,Bostwick inlet eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00365,2021_BOST_A_2,2021,8,12,BOST_A,eelgrass,Bostwick inlet eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00366,2021_BOST_A_3,2021,8,12,BOST_A,eelgrass,Bostwick inlet eel,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00367,2021_BOST_A_4,2021,8,12,BOST_A,eelgrass,Bostwick inlet eel,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00368,2021_BOST_B_1,2021,8,11,BOST_B,kelp,Bostwick inlet kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00369,2021_BOST_B_2,2021,8,11,BOST_B,kelp,Bostwick inlet kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00370,2021_BOST_B_3,2021,8,11,BOST_B,kelp,Bostwick inlet kelp,,,,sample,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00371,2021_BOST_B_4,2021,8,11,BOST_B,kelp,Bostwick inlet kelp,,,,field_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e00372,extraction_blank,,,,,,,,,,extraction_blank,,Lia_UAF_nearshore_eDNA,LKD,LKD,2021_11_22,,,
+e03265,2022_ILDE_A_1,2022,6,26,ILDE_A,mixed,Pt. Ildefonso,Prince of Wales Island,-133.26463,55.576984,sample,506,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A1
+e03266,2022_ILDE_A_2,2022,6,26,ILDE_A,mixed,Pt. Ildefonso,Prince of Wales Island,-133.264388,55.577072,sample,510,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B1
+e03267,2022_ILDE_A_3,2022,6,26,ILDE_A,mixed,Pt. Ildefonso,Prince of Wales Island,-133.263904,55.577056,sample,513,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C1
+e03268,2022_ILDE_A_4,2022,6,26,ILDE_A,mixed,Pt. Ildefonso,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D1
+e03269,2022_CLAM_A_1,2022,6,27,CLAM_A,mixed,Clam Island,Prince of Wales Island,-133.158826,55.518265,sample,533,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F1
+e03270,2022_CLAM_A_2,2022,6,27,CLAM_A,mixed,Clam Island,Prince of Wales Island,-133.158509,55.518193,sample,537,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G1
+e03271,2022_CLAM_A_3,2022,6,27,CLAM_A,mixed,Clam Island,Prince of Wales Island,-133.158195,55.518027,sample,539,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H1
+e03272,2022_CLAM_A_4,2022,6,27,CLAM_A,mixed,Clam Island,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A2
+e03273,2022_ROSA_A_1,2022,6,28,ROSA_A,eelgrass,Rosary Island,Prince of Wales Island,-133.294616,55.577276,sample,553,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C2
+e03274,2022_ROSA_A_2,2022,6,28,ROSA_A,eelgrass,Rosary Island,Prince of Wales Island,-133.294975,55.577046,sample,555,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D2
+e03275,2022_ROSA_A_3,2022,6,28,ROSA_A,eelgrass,Rosary Island,Prince of Wales Island,-133.295362,55.57689,sample,558,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E2
+e03276,2022_ROSA_A_4,2022,6,28,ROSA_A,eelgrass,Rosary Island,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F2
+e03277,2022_TRIS_A_1,2022,6,29,TRIS_A,eelgrass,Triste Pt,Prince of Wales Island,-133.496163,55.418493,sample,645,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H2
+e03278,2022_TRIS_A_2,2022,6,29,TRIS_A,eelgrass,Triste Pt,Prince of Wales Island,-133.49597,55.418368,sample,648,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A3
+e03279,2022_TRIS_A_3,2022,6,29,TRIS_A,eelgrass,Triste Pt,Prince of Wales Island,-133.49585,55.418271,sample,649,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B3
+e03280,2022_TRIS_A_4,2022,6,29,TRIS_A,eelgrass,Triste Pt,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C3
+e03281,2022_SARI_A_1,2022,6,30,SARI_A,mixed,Santa Rita,Prince of Wales Island,-133.453949,55.418721,sample,702,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E3
+e03282,2022_SARI_A_2,2022,6,30,SARI_A,mixed,Santa Rita,Prince of Wales Island,-133.45424,55.418589,sample,704,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F3
+e03283,2022_SARI_A_3,2022,6,30,SARI_A,mixed,Santa Rita,Prince of Wales Island,-133.454419,55.418368,sample,707,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G3
+e03284,2022_SARI_A_4,2022,6,30,SARI_A,mixed,Santa Rita,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H3
+e03285,2022_HARM_A_1,2022,7,1,HARM_A,mixed,Harmony Island,Prince of Wales Island,-133.405762,55.719473,sample,734,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B4
+e03286,2022_HARM_A_2,2022,7,1,HARM_A,mixed,Harmony Island,Prince of Wales Island,-133.405709,55.719394,sample,736,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C4
+e03287,2022_HARM_A_3,2022,7,1,HARM_A,mixed,Harmony Island,Prince of Wales Island,-133.405962,55.719257,sample,739,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D4
+e03288,2022_HARM_A_4,2022,7,1,HARM_A,mixed,Harmony Island,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E4
+e03289,2022_BLAQ_A_1,2022,7,2,BLAQ_A,mixed,Blanquizal Point,Prince of Wales Island,-133.387584,55.62103,sample,748,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G4
+e03290,2022_BLAQ_A_2,2022,7,2,BLAQ_A,mixed,Blanquizal Point,Prince of Wales Island,-133.386736,55.620924,sample,752,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H4
+e03291,2022_BLAQ_A_3,2022,7,2,BLAQ_A,mixed,Blanquizal Point,Prince of Wales Island,-133.386497,55.621235,sample,754,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A5
+e03292,2022_BLAQ_A_4,2022,7,2,BLAQ_A,mixed,Blanquizal Point,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B5
+e03293,2022_NSTP_A_1,2022,7,3,NSTP_A,mixed,North St. Phillips,Prince of Wales Island,-133.404978,55.66603,sample,851,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D5
+e03294,2022_NSTP_A_2,2022,7,3,NSTP_A,mixed,North St. Phillips,Prince of Wales Island,-133.404676,55.66576,sample,853,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E5
+e03295,2022_NSTP_A_3,2022,7,3,NSTP_A,mixed,North St. Phillips,Prince of Wales Island,-133.40493,55.665754,sample,855,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F5
+e03296,2022_NSTP_A_4,2022,7,3,NSTP_A,mixed,North St. Phillips,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G5
+e03297,2022_ABES_A_1,2022,7,18,ABES_A,eelgrass,Abbess Island,Prince of Wales Island,-133.17453,55.554739,sample,945,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A6
+e03298,2022_ABES_A_2,2022,7,18,ABES_A,eelgrass,Abbess Island,Prince of Wales Island,-133.174355,55.554811,sample,946,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B6
+e03299,2022_ABES_A_3,2022,7,18,ABES_A,eelgrass,Abbess Island,Prince of Wales Island,-133.174047,55.554804,sample,948,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C6
+e03300,2022_ABES_A_4,2022,7,18,ABES_A,eelgrass,Abbess Island,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D6
+e03301,2022_SHIN_A_1,2022,7,14,SHIN_A,eelgrass,Shinaku Inlet,Prince of Wales Island,-133.164052,55.597165,sample,532,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F6
+e03302,2022_SHIN_A_2,2022,7,14,SHIN_A,eelgrass,Shinaku Inlet,Prince of Wales Island,-133.164225,55.597051,sample,535,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G6
+e03303,2022_SHIN_A_3,2022,7,14,SHIN_A,eelgrass,Shinaku Inlet,Prince of Wales Island,-133.163842,55.597226,sample,538,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H6
+e03304,2022_SHIN_A_4,2022,7,14,SHIN_A,eelgrass,Shinaku Inlet,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A7
+e03305,2022_NATZ_A_1,2022,7,16,NATZ_A,eelgrass,Natzuhini,Prince of Wales Island,-132.87865,55.247605,sample,635,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C7
+e03306,2022_NATZ_A_2,2022,7,16,NATZ_A,eelgrass,Natzuhini,Prince of Wales Island,-132.87858,55.247579,sample,639,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D7
+e03307,2022_NATZ_A_3,2022,7,16,NATZ_A,eelgrass,Natzuhini,Prince of Wales Island,-132.878416,55.247568,sample,642,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E7
+e03308,2022_NATZ_A_4,2022,7,16,NATZ_A,eelgrass,Natzuhini,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F7
+e03309,2022_NOSK_A_1,2022,7,13,NOSK_A,eelgrass,Nossuk Bay,Prince of Wales Island,-133.340948,55.708783,sample,515,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H7
+e03310,2022_NOSK_A_2,2022,7,13,NOSK_A,eelgrass,Nossuk Bay,Prince of Wales Island,-133.340919,55.708814,sample,518,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A8
+e03311,2022_NOSK_A_3,2022,7,13,NOSK_A,eelgrass,Nossuk Bay,Prince of Wales Island,-133.34083,55.708953,sample,521,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B8
+e03312,2022_NOSK_A_4,2022,7,13,NOSK_A,eelgrass,Nossuk Bay,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C8
+e03313,2022_REFU_A_1,2022,7,15,REFU_A,eelgrass,Port Refugio,Prince of Wales Island,-133.332695,55.284355,sample,731,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E8
+e03314,2022_REFU_A_2,2022,7,15,REFU_A,eelgrass,Port Refugio,Prince of Wales Island,-133.332688,55.28437,sample,734,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F8
+e03315,2022_REFU_A_3,2022,7,15,REFU_A,eelgrass,Port Refugio,Prince of Wales Island,-133.332443,55.284462,sample,736,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G8
+e03316,2022_REFU_A_4,2022,7,15,REFU_A,eelgrass,Port Refugio,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H8
+e03317,2022_SFEI_A_1,2022,7,11,SFEI_A,mixed,South Fish Egg Island ,Prince of Wales Island,-133.175817,55.483952,sample,413,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B9
+e03318,2022_SFEI_A_2,2022,7,11,SFEI_A,mixed,South Fish Egg Island ,Prince of Wales Island,-133.175829,55.484138,sample,415,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C9
+e03319,2022_SFEI_A_3,2022,7,11,SFEI_A,mixed,South Fish Egg Island ,Prince of Wales Island,-133.175752,55.484266,sample,420,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D9
+e03320,2022_SFEI_A_4,2022,7,11,SFEI_A,mixed,South Fish Egg Island ,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E9
+e03321,2022_GUKT_A_1,2022,7,12,GUKT_A,eelgrass,Guktu Bay,Prince of Wales Island,-133.311965,55.740338,sample,429,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G9
+e03322,2022_GUKT_A_2,2022,7,12,GUKT_A,eelgrass,Guktu Bay,Prince of Wales Island,-133.31199,55.740311,sample,434,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H9
+e03323,2022_GUKT_A_3,2022,7,12,GUKT_A,eelgrass,Guktu Bay,Prince of Wales Island,-133.311913,55.740463,sample,438,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A10
+e03324,2022_GUKT_A_4,2022,7,12,GUKT_A,eelgrass,Guktu Bay,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B10
+e03325,2022_NFEI_A_1,2022,7,17,NFEI_A,eelgrass,North Fish Egg Island,Prince of Wales Island,-133.166886,55.496151,sample,811,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D10
+e03326,2022_NFEI_A_2,2022,7,17,NFEI_A,eelgrass,North Fish Egg Island,Prince of Wales Island,-133.167191,55.496325,sample,813,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E10
+e03327,2022_NFEI_A_3,2022,7,17,NFEI_A,eelgrass,North Fish Egg Island,Prince of Wales Island,-133.101054,55.291786,sample,815,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F10
+e03328,2022_NFEI_A_4,2022,7,17,NFEI_A,eelgrass,North Fish Egg Island,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G10
+e03329,2022_KLWA_A_1,2022,7,25,KLWA_A,eelgrass,Klawock Airport,Prince of Wales Island,-133.09376,55.576962,sample,446,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A11
+e03330,2022_KLWA_A_2,2022,7,25,KLWA_A,eelgrass,Klawock Airport,Prince of Wales Island,-133.093802,55.576958,sample,448,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,B11
+e03331,2022_KLWA_A_3,2022,7,25,KLWA_A,eelgrass,Klawock Airport,Prince of Wales Island,-133.0941,55.577179,sample,449,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C11
+e03332,2022_KLWA_A_4,2022,7,25,KLWA_A,eelgrass,Klawock Airport,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D11
+e03333,2022_HALI_A_1,2022,7,26,HALI_A,mixed,Halibut Nose,Prince of Wales Island,-132.969503,55.216572,sample,529,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F11
+e03334,2022_HALI_A_2,2022,7,26,HALI_A,mixed,Halibut Nose,Prince of Wales Island,-132.969439,55.216791,sample,531,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,G11
+e03335,2022_HALI_A_3,2022,7,26,HALI_A,mixed,Halibut Nose,Prince of Wales Island,-132.969413,55.217031,sample,534,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,H11
+e03336,2022_HALI_A_4,2022,7,26,HALI_A,mixed,Halibut Nose,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,A12
+e03337,2022_KARH_A_1,2022,7,27,KARH_A,mixed,Karheen,Prince of Wales Island,-133.321813,55.789496,sample,538,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,C12
+e03338,2022_KARH_A_2,2022,7,27,KARH_A,mixed,Karheen,Prince of Wales Island,-133.32157,55.789869,sample,541,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,D12
+e03339,2022_KARH_A_3,2022,7,27,KARH_A,mixed,Karheen,Prince of Wales Island,-133.321314,55.789982,sample,543,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,E12
+e03340,2022_KARH_A_4,2022,7,27,KARH_A,mixed,Karheen,Prince of Wales Island,,,field_blank,,Nearshore Habitats / Lia & Jessica,Jessica Whitney,JMW,2024_01_31,plate,31_2024,F12
+e03341,blank1,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,E1
+e03342,blank2,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,G2
+e03343,blank3,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,A4
+e03344,blank4,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,C5
+e03345,blank5,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,E6
+e03346,blank6,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,G7
+e03347,blank7,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,A9
+e03348,blank8,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,C10
+e03349,blank9,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,E11
+e03350,blank10,,,,,,,,,,extraction_blank,,,,JMW,2024_01_31,plate,31_2024,G12

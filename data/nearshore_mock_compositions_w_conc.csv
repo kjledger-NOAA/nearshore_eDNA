@@ -1,0 +1,134 @@
+Community_ID,Common_name,species,taxon,Community_name,DNA_Ratio,uL,conc_ng_uL_measured,conc_ng_uL_supposed
+COM1,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,even,1,40,0,0.2
+COM1,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,even,1,40,0.214,0.2
+COM1,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,even,1,40,0.219,0.2
+COM1,Crescent gunnels,Pholis laeta,Pholis laeta,even,1,40,0.231,0.2
+COM1,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,even,1,40,0.231,0.2
+COM1,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,even,1,40,0.214,0.2
+COM1,Chum salmon,Oncorhynchus keta,Oncorhynchus keta,even,1,40,0.223,0.2
+COM1,Coho salmon,Oncorhynchus kisutch,Oncorhynchus kisutch,even,1,40,0.198,0.2
+COM1,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,even,1,40,0.202,0.2
+COM1,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,even,1,40,0.215,0.2
+COM1,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,even,1,40,0.249,0.2
+COM2,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,high_abun_skew,5,80,0,0.2
+COM2,Chum salmon,Oncorhynchus keta,Oncorhynchus keta,high_abun_skew,10,160,0.223,0.2
+COM2,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,high_abun_skew,10,160,0.214,0.2
+COM2,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,high_abun_skew,10,160,0.155,0.2
+COM2,Yellowfin sole,Limanda aspera,Limanda aspera,high_abun_skew,1,16,0.204,0.2
+COM2,Pacific herring,Clupea pallasii,Clupea pallasii,high_abun_skew,2,32,0.17,0.2
+COM2,Yellowtail rockfish,Sebastes flavidus,Sebastes,high_abun_skew,1,16,0.151,0.2
+COM2,Pacific rock sole,Lepidopsetta bilineata,Lepidopsetta,high_abun_skew,1,16,0.206,0.2
+COM2,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,high_abun_skew,2,32,0.202,0.2
+COM2,Brown rockfish,Sebastes auriculatus,Sebastes auriculatus,high_abun_skew,1,16,0.222,0.2
+COM3,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,high_abun_skew_2,1,16,0,0.2
+COM3,Pacific herring,Clupea pallasii,Clupea pallasii,high_abun_skew_2,10,160,0.17,0.2
+COM3,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,high_abun_skew_2,5,80,0.155,0.2
+COM3,Chum salmon,Oncorhynchus keta,Oncorhynchus keta,high_abun_skew_2,2,32,0.223,0.2
+COM3,Coho salmon,Oncorhynchus kisutch,Oncorhynchus kisutch,high_abun_skew_2,1,16,0.198,0.2
+COM3,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,high_abun_skew_2,2,32,0.249,0.2
+COM3,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,high_abun_skew_2,1,16,0.198,0.2
+COM3,Pacific rock sole,Lepidopsetta bilineata,Lepidopsetta,high_abun_skew_2,1,16,0.206,0.2
+COM3,Yellowfin sole,Limanda aspera,Limanda aspera,high_abun_skew_2,1,16,0.204,0.2
+COM3,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,high_abun_skew_2,2,32,0.215,0.2
+COM3,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,high_abun_skew_2,1,16,0.219,0.2
+COM3,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,high_abun_skew_2,1,16,0.202,0.2
+COM4,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,salmon & friends,2,32,0,0.2
+COM4,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,salmon & friends,10,160,0.155,0.2
+COM4,Chum salmon,Oncorhynchus keta,Oncorhynchus keta,salmon & friends,5,80,0.223,0.2
+COM4,Coho salmon,Oncorhynchus kisutch,Oncorhynchus kisutch,salmon & friends,5,80,0.198,0.2
+COM4,Sockeye salmon,Oncorhynchus nerka,Oncorhynchus nerka,salmon & friends,2,32,0.262,0.2
+COM4,Chinook salmon,Oncorhynchus tshawytscha,Oncorhynchus tshawytscha,salmon & friends,1,16,0.35,0.2
+COM4,Crescent gunnels,Pholis laeta,Pholis laeta,salmon & friends,1,16,0.231,0.2
+COM4,Yellowfin sole,Limanda aspera,Limanda aspera,salmon & friends,1,16,0.204,0.2
+COM4,Pacific cod,Gadus macrocephalus,Gadus,salmon & friends,2,32,0.203,0.2
+COM5,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,kelpy,1,16,0,0.2
+COM5,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,kelpy,2,32,0.219,0.2
+COM5,Brown rockfish,Sebastes auriculatus,Sebastes auriculatus,kelpy,5,80,0.222,0.2
+COM5,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,kelpy,5,80,0.198,0.2
+COM5,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,kelpy,5,80,0.202,0.2
+COM5,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,kelpy,10,160,0.214,0.2
+COM5,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,kelpy,2,32,0.231,0.2
+COM5,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,kelpy,5,80,0.249,0.2
+COM5,Coho salmon,Oncorhynchus kisutch,Oncorhynchus kisutch,kelpy,2,32,0.198,0.2
+COM5,Yellowfin sole,Limanda aspera,Limanda aspera,kelpy,1,16,0.204,0.2
+COM5,Lingcod,Ophiodon elongatus,Ophiodon elongatus,kelpy,2,32,0.181,0.2
+COM6,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,mimic_eelgrass_shin_a_22,,32.3,0,0.2
+COM6,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,mimic_eelgrass_shin_a_22,,6.7,0.219,0.2
+COM6,Crescent gunnels,Pholis laeta,Pholis laeta,mimic_eelgrass_shin_a_22,,5.2,0.231,0.2
+COM6,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,mimic_eelgrass_shin_a_22,,96.5,0.214,0.2
+COM6,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,mimic_eelgrass_shin_a_22,,3.3,0.215,0.2
+COM6,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,mimic_eelgrass_shin_a_22,,17.5,0.249,0.2
+COM6,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,mimic_eelgrass_shin_a_22,,33.4,0.202,0.2
+COM6,Pacific rock sole,Lepidopsetta bilineata,Lepidopsetta,mimic_eelgrass_shin_a_22,,4.4,0.206,0.2
+COM6,Yellowfin sole,Limanda aspera,Limanda aspera,mimic_eelgrass_shin_a_22,,2,0.204,0.2
+COM7,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,mimic_mixed_harm_a_22,,0.8,0,0.2
+COM7,Pacific cod,Gadus macrocephalus,Gadus,mimic_mixed_harm_a_22,,7.5,0.203,0.2
+COM7,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,mimic_mixed_harm_a_22,,7.4,0.219,0.2
+COM7,Crescent gunnels,Pholis laeta,Pholis laeta,mimic_mixed_harm_a_22,,56.3,0.231,0.2
+COM7,Lingcod,Ophiodon elongatus,Ophiodon elongatus,mimic_mixed_harm_a_22,,95.2,0.181,0.2
+COM7,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,mimic_mixed_harm_a_22,,4.1,0.215,0.2
+COM7,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,mimic_mixed_harm_a_22,,4.2,0.249,0.2
+COM7,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,mimic_mixed_harm_a_22,,3.4,0.198,0.2
+COM7,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,mimic_mixed_harm_a_22,,2,0.155,0.2
+COM7,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,mimic_mixed_harm_a_22,,20.4,0.214,0.2
+COM7,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,mimic_mixed_harm_a_22,,2,0.231,0.2
+COM8,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,eelgrassy,5,80,0,0.2
+COM8,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,eelgrassy,5,80,0.214,0.2
+COM8,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,eelgrassy,2,32,0.219,0.2
+COM8,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,eelgrassy,1,16,0.231,0.2
+COM8,Crescent gunnels,Pholis laeta,Pholis laeta,eelgrassy,1,16,0.231,0.2
+COM8,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,eelgrassy,2,32,0.215,0.2
+COM8,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,eelgrassy,2,32,0.249,0.2
+COM8,Pacific cod,Gadus macrocephalus,Gadus,eelgrassy,2,32,0.203,0.2
+COM8,Pacific rock sole,Lepidopsetta bilineata,Lepidopsetta,eelgrassy,1,16,0.206,0.2
+COM8,Chum Salmon,Oncorhynchus keta,Oncorhynchus keta,eelgrassy,2,32,0.223,0.2
+COM8,Pacific herring,Clupea pallasii,Clupea pallasii,eelgrassy,2,32,0.17,0.2
+COM8,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,eelgrassy,2,32,0.198,0.2
+COM8,Yellowtail rockfish,Sebastes flavidus,Sebastes,eelgrassy,1,16,0.151,0.2
+COM8,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,eelgrassy,2,32,0.214,0.2
+COM8,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,eelgrassy,5,80,0.155,0.2
+COM8,Lingcod,Ophiodon elongatus,Ophiodon elongatus,eelgrassy,2,32,0.181,0.2
+COM9,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,mixy,1,16,0,0.2
+COM9,Lingcod,Ophiodon elongatus,Ophiodon elongatus,mixy,5,80,0.181,0.2
+COM9,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,mixy,2,32,0.219,0.2
+COM9,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,mixy,2,32,0.198,0.2
+COM9,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,mixy,5,80,0.214,0.2
+COM9,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,mixy,1,16,0.231,0.2
+COM9,Pacific cod,Gadus macrocephalus,Gadus,mixy,2,32,0.203,0.2
+COM9,Crescent gunnels,Pholis laeta,Pholis laeta,mixy,2,32,0.231,0.2
+COM9,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,mixy,1,16,0.215,0.2
+COM9,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,mixy,1,16,0.155,0.2
+COM9,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,mixy,5,80,0.214,0.2
+COM10,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,rockfishy,1,16,0,0.2
+COM10,Brown rockfish,Sebastes auriculatus,Sebastes auriculatus,rockfishy,2,32,0.222,0.2
+COM10,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,rockfishy,2,32,0.198,0.2
+COM10,Yellowtail rockfish,Sebastes flavidus,Sebastes,rockfishy,2,32,0.151,0.2
+COM10,Lingcod,Ophiodon elongatus,Ophiodon elongatus,rockfishy,1,16,0.181,0.2
+COM10,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,rockfishy,1,16,0.219,0.2
+COM10,Pacific cod,Gadus macrocephalus,Gadus,rockfishy,1,16,0.203,0.2
+COM10,Pacific rock sole,Lepidopsetta bilineata,Lepidopsetta,rockfishy,1,16,0.206,0.2
+COM11,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,,10,160,0.206,0.2
+COM11,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,,2,32,0.214,0.2
+COM11,Pacific staghorn sculpin,Leptocottus armatus,Leptocottus armatus,,1,16,0.202,0.2
+COM11,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,,2,32,0.215,0.2
+COM11,Snake prickleback,Lumpenus sagitta,Lumpenus sagitta,,2,32,0.249,0.2
+COM11,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,,2,32,0.214,0.2
+COM11,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,,2,32,0.219,0.2
+COM11,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,,1,16,0.155,0.2
+COM12,Crescent gunnels,Pholis laeta,Pholis laeta,,2,32,0.231,0.2
+COM12,Lingcod,Ophiodon elongatus,Ophiodon elongatus,,1,16,0.181,0.2
+COM12,Bay pipefish,Syngnathus leptorhynchus,Syngnathus leptorhynchus,,5,80,0.215,0.2
+COM12,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,,1,16,0.198,0.2
+COM12,Pink salmon,Oncorhynchus gorbuscha,Oncorhynchus gorbuscha,,1,16,0.155,0.2
+COM12,Pacific sandlance,Ammodytes personatus,Ammodytes personatus,,2,32,0.214,0.2
+COM12,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,,1,16,0.231,0.2
+COM12,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,,2,32,0.219,0.2
+COM12,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,,5,80,0.206,0.2
+COM13,Whitespotted greenling,Hexagrammos stelleri,Hexagrammos,,1,16,0.219,0.2
+COM13,Brown rockfish,Sebastes auriculatus,Sebastes auriculatus,,1,16,0.222,0.2
+COM13,Copper rockfish,Sebastes caurinus,Sebastes caurinus or Sebastes maliger,,1,16,0.198,0.2
+COM13,Shiner perch,Cymatogaster aggregata,Cymatogaster aggregata,,2,32,0.214,0.2
+COM13,Silverspotted sculpin,Blepsias cirrhosus,Blepsias cirrhosus,,1,16,0.231,0.2
+COM13,Coho salmon,Oncorhynchus kisutch,Oncorhynchus kisutch,,1,16,0.198,0.2
+COM13,Yellowfin sole,Limanda aspera,Limanda aspera,,1,16,0.204,0.2
+COM13,Three-spine stickleback,Gasterosteus aculeatus,Gasterosteus aculeatus,,15,240,0.206,0.2
