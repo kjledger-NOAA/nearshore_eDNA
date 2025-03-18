@@ -108,6 +108,8 @@ alpha_plot <-  ggplot(alpha_sum_all) +
 
 alpha_plot
 ```
+
+
 ## Pull out estimates of alpha, convert to CLR 
 ```{r}
 p_space_group1 <- (exp(group1$pars$alpha) / rowSums(exp(group1$pars$alpha))) %>% as.data.frame()
@@ -198,6 +200,7 @@ p_clr <-  ggplot(clr_alpha_all) +
 
 p_clr
 ```
+
 ```{r}
 ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr.png", width = 8, height = 5, units = "in")
 ```

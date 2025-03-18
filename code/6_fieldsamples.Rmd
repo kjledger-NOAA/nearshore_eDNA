@@ -1,8 +1,10 @@
 ---
-title: "5_fieldsamples"
+title: "6_all taxa in fieldsamples"
 output: html_document
 date: "2024-11-13"
 ---
+
+this script looks at all taxa in the nearshore eDNA dataset (i.e. not just the species in the mock communities)
 
 load libraries
 ```{r, message=FALSE}
@@ -15,41 +17,18 @@ load decontaminated reads and filter to retain just the field samples
 ```{r}
 decontaminated_table <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/decontaminated_asv_table.csv") %>%
   select(!X) %>%
-  filter(sample_type == "sample") %>%
   filter(reads > 0)
 ```
 
 load sample metadata
 ```{r}
 metadata <- read.csv("/home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/nearshore_metadata.csv") %>%
-  rename(Sample_ID = sample_ID) %>%
-  filter(sample_type == "sample")
+  rename(Sample_ID = sample_ID)
 ```
-
-how many reads in field samples belong to ASVs/taxa that were included in the mock communities? 
-```{r}
-asvs_in_mocks <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/asvs_in_mocks.csv") %>%
-  select(!X) 
-```
-
-add column to decontaminated table to designate if that ASVs was in the mock communities 
-```{r}
-decontaminated_table <- decontaminated_table %>%
-  mutate(in_mock = ifelse(ASV %in% asvs_in_mocks$ASV, "yes", "no"))
-```
-
-summary table 
-```{r}
-decontaminated_table %>%
-  group_by(in_mock) %>%
-  summarize(total_reads = sum(reads))
-```
-
-so about 3/4th of reads come from taxa in the mock communities! that's pretty good. 
 
 assign asv's to taxons 
 ```{r}
-taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20241112_collapsed.csv") %>%
+taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_20250110_collapsed.csv") %>%
   select(!X) %>%
   select(qseqid, taxon) %>%
   unique() %>%
@@ -59,33 +38,72 @@ taxonomy <- read.csv("/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_moc
 join to decontaminated ASV table
 ```{r}
 decon_table_w_tax <-  decontaminated_table %>%
-  left_join(taxonomy, by = "ASV")
+  left_join(taxonomy, by = "ASV") #%>%
+   #filter(!str_starts(Sample_ID, "COM"))
 ```
 
-summary table 
+make a summary table of how many reads are assigned to each taxa 
 ```{r}
-decon_table_w_tax %>%
-  group_by(in_mock, taxon) %>%
-  summarize(total_reads = sum(reads)) %>%
-  pivot_wider(names_from = in_mock, values_from = total_reads)
+taxon_read_summary <- decon_table_w_tax %>%
+  group_by(taxon, sample_type) %>%
+  summarise(total_reads = sum(reads)) %>%
+  pivot_wider(names_from = sample_type, values_from = total_reads, values_fill = 0)
 ```
 
+```{r}
+#write.csv(taxon_read_summary, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/taxonomy_readcounts.csv")
+```
 
-based on this, i'll considier going back and make a few changes to the taxonomic assignments 
-1 - put all Ammodytes reads to Ammodytes personatus (it's the only species present in region)
-2 - lump the few Anoplarchus purpurescens reads to genus level 
-3 - lump the few Cottus cognatus reads to genus level
-4 - lump the few Myoxocephalus stelleri to genus level
-5 - put Pholis reads to Pholis laeta
 
 convert to taxon table 
 ```{r}
 taxon_table <- decon_table_w_tax %>%
-  select(Sample_ID, taxon, reads) %>%
+  select(Sample_ID, sample_type, taxon, reads) %>%
   mutate(reads = as.integer(reads)) %>%
   pivot_wider(names_from = taxon, values_from = reads, values_fn = sum, values_fill = 0)
 ```
 
-need to define project objectives before exploring data any more... 
+
+calculate proportion of reads per taxa in each technical/PCR replicate 
+```{r}
+taxon_proportions <- taxon_table %>%
+  pivot_longer(cols = -c(Sample_ID, sample_type), names_to = "taxon", values_to = "reads") %>%
+  group_by(Sample_ID) %>%
+  mutate(total_reads = sum(reads),
+         prop = reads/total_reads) %>%
+  separate(col = Sample_ID, into = c("bottle", "replicate"), sep = "-")
+```
+
+calculate simple mean of taxa proportions for a given bottle 
+```{r}
+bottle_prop <- taxon_proportions %>%
+  group_by(bottle, taxon) %>%
+  summarize(simple.N = n(),
+            simple.mean = mean(prop),
+            simple.SD = sd(prop))
+```
+
+join back some metadata
+```{r}
+metadata_mini <- metadata %>%
+  rename(bottle = extraction_ID) %>%
+  select(!Sample_ID) %>%
+  unique()
+
+bottle_prop_w_meta <- bottle_prop %>%
+  filter(taxon != "NA") %>%
+  left_join(metadata_mini, by = "bottle") %>%
+  filter(sample_type != "mock")
+
+bottle_prop_w_meta %>%
+  filter(is.na(alternative_ID)) %>%
+  filter(sample_type != "mock")
+```
+
+
+export
+```{r}
+write.csv(bottle_prop_w_meta, "~/nearshore_eDNA/outputs/samples_w_mocks_updated/field_quant/all_taxa_simple_20250110.csv")
+```
 
 

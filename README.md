@@ -1,4 +1,13 @@
-# nearshore eDNA
+# nearshore eDNA metabarcoding analysis 
+
+this repo contains metabarcoding analyses of mock community and environmental samples for XXXX (citation)
+
+MiSeq sequencing notes: 
+- 2021 and 2022 field samples: july 1 2024
+- mock comms 1 thru 10: august 20 2024
+- mock comms 11 thru 13: october 16 2024
+
+
 
 eDNA metabarcoding meeting [notes](https://docs.google.com/document/d/1Rp4ZUWfbEIUR9bBEf40BQqtvNvOP0KSQv7GWAV4t0I0/edit#heading=h.eb0y8t2ced3x)
 
@@ -18,6 +27,7 @@ notes from 11/8/2024:
 
 - exploring field samples (no qm adjustments yet) in "7_fieldsamples.Rmd"
 
-
+notes from 1/10/24:
+- updated the taxonomic assignment to remove nested assignments (ie. the same species or genus contributing to multiple genus or family assignments)
 
 

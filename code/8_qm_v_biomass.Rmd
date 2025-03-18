@@ -130,22 +130,22 @@ clr_alpha_sum <- clr_alpha_sum %>%
                                        as.character(species)))
 
 p_clr <-  ggplot(clr_alpha_sum) +
+    geom_vline(xintercept=0,linetype="dashed") +
     geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
     geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
     geom_point(aes(x=Mean,y=SP,fill=SP),size=3,shape=21) +
-    geom_vline(xintercept=0,linetype="dashed") +
     #scale_fill_manual(values=clr_alpha_sum$manual.col %>% as.character()) +
     scale_x_continuous("Amplification Efficiency (CLR)") +
     scale_y_discrete(NULL) +
     theme_bw() +
-    theme(legend.position = "right",
+    theme(legend.position = "none",
           axis.text.y = element_text(size=10))
 
 p_clr
 ```
 
 ```{r}
-ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks_combinedestimate.png", width = 8, height = 5, units = "in")
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/clr_all_mocks_combinedestimate.png", width = 7, height = 5, units = "in")
 ```
 
 
@@ -557,7 +557,11 @@ df_bay_means <- df_mb %>%
   #filter(method == "mock1.mean") %>%
   filter(method == "raw.mean") %>%
   group_by(year, bay_id, habitat, SP) %>%
-  summarize(mean_prop = mean(prop)) %>%
+  summarize(mean_prop = mean(prop),
+            SD=sd(prop),
+                q.025 = quantile(prop,probs=0.025),
+                Median = quantile(prop,probs=0.5),
+                q.975 = quantile(prop,probs=0.975)) %>%
   mutate(method = "raw_mean_of_biological_reps")
 ```
 
@@ -649,16 +653,26 @@ fig_2022
 scatterplots? 
 ```{r}
 df3 <- df2 %>%
-  pivot_wider(names_from = "method", values_from = "prop") %>%
+  pivot_wider(names_from = "method", values_from = c("prop":"q.975")) %>%
+  select(!SD_seine) %>%
+  select(!q.025_seine) %>%
+  select(!Median_seine) %>%
+  select(!q.975_seine) %>%
   #mutate(qm = ifelse(qm_mean_of_biological_reps < 0.01, 0, qm_mean_of_biological_reps)) %>%
-  mutate(eDNA = ifelse(raw_mean_of_biological_reps < 0.01, 0, raw_mean_of_biological_reps)) %>%
-  mutate(seine = ifelse(is.na(seine), 0, seine))
+  mutate(prop_raw_mean_of_biological_reps = ifelse(prop_raw_mean_of_biological_reps < 0.01, 0, prop_raw_mean_of_biological_reps)) %>%
+    mutate(SD_raw_mean_of_biological_reps = ifelse(prop_raw_mean_of_biological_reps < 0.01, 0, SD_raw_mean_of_biological_reps)) %>%
+    mutate(q.025_raw_mean_of_biological_reps = ifelse(prop_raw_mean_of_biological_reps < 0.01, 0, q.025_raw_mean_of_biological_reps)) %>%
+    mutate(Median_raw_mean_of_biological_reps = ifelse(prop_raw_mean_of_biological_reps < 0.01, 0, Median_raw_mean_of_biological_reps)) %>%
+    mutate(q.975_raw_mean_of_biological_reps = ifelse(prop_raw_mean_of_biological_reps < 0.01, 0, q.975_raw_mean_of_biological_reps)) %>%
+  mutate(prop_seine = ifelse(is.na(prop_seine), 0, prop_seine))
 ```
+
 
 ```{r}
 fig <- df3 %>%
   ggplot() +
-  geom_point(aes(x= seine, y = eDNA, color = SP)) + 
+  geom_errorbar(aes(x=prop_seine, ymin=q.025_raw_mean_of_biological_reps, ymax=q.975_raw_mean_of_biological_reps, color=SP),width=0, size = .5) +
+  geom_point(aes(x= prop_seine, y = prop_raw_mean_of_biological_reps, color = SP)) + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black")  +
   facet_wrap(~SP, scales = "free") #+
@@ -668,13 +682,16 @@ fig <- df3 %>%
 fig
   
 #ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm.png", dpi = 300, width = 10, height = 6)
-ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom.png", dpi = 300, width = 10, height = 6)
+#ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom.png", dpi = 300, width = 10, height = 6)
+ggsave(plot = fig, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_zoom_95IQR.png", dpi = 300, width = 10, height = 6)
+
 ```
 
 ```{r}
 fig2 <- df3 %>%
   ggplot() +
-  geom_point(aes(x= seine, y = eDNA, color = habitat)) + 
+  geom_errorbar(aes(x=prop_seine, ymin=q.025_raw_mean_of_biological_reps, ymax=q.975_raw_mean_of_biological_reps, color=habitat),width=0, size = .5) +
+  geom_point(aes(x= prop_seine, y = prop_raw_mean_of_biological_reps, color = habitat)) + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black")  +
   facet_wrap(~SP, scales = "free") +
@@ -685,6 +702,6 @@ fig2 <- df3 %>%
 
 fig2
   
-ggsave(plot = fig2, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_by_habitat.png", dpi = 300, width = 10, height = 6)
+#ggsave(plot = fig2, "/home/kimberly.ledger/nearshore_eDNA/outputs/samples_w_mocks_updated/figures/biomass_v_qm_by_habitat.png", dpi = 300, width = 10, height = 6)
 ```
 
