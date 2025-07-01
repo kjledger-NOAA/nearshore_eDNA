@@ -83,7 +83,14 @@ make list of just the ASVs found in mock community samples
 ```{r}
 asvs_in_mocks <- mock_taxons %>%
   group_by(ASV, taxon) %>%
-  summarise(tot_reads = sum(reads))
+  summarise(tot_reads = sum(reads)) %>%
+  filter(ASV != "ASV_0610") %>%         ## remove the asvs that don't belong 
+  filter(ASV != "ASV_0864") %>% 
+  filter(ASV != "ASV_0853") %>%
+  filter(ASV != "ASV_0865")
+
+n_distinct(unique(asvs_in_mocks$taxon))
+unique(asvs_in_mocks$taxon)
 ```
 
 reformat and join the mock reads with expected mock values 
@@ -103,6 +110,22 @@ mock_table <- mock_taxons %>%
 
 mock_all <- mock_table %>%
   bind_rows(mock_metadata)
+```
+
+total reads in mock communities
+```{r}
+sum(mock_table$reads)
+```
+
+number of reads that did not assign to a designated mock community species 
+```{r}
+mock_table %>%
+  filter(taxon %in% c("Oncorhynchus", "Pleuronectidae 3")) %>%
+  group_by(taxon) %>%
+  summarize(total_reads = sum(reads),
+            n_samples = n_distinct(Sample_ID),
+            n_comm = n_distinct(Community_ID),
+            avg_comm_prop = mean(Perc_Community))
 ```
 
 

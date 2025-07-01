@@ -21,6 +21,8 @@ load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in
 in2 <- Output
 load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in3_out2.Rdata")
 in3 <- Output
+load("/home/kimberly.ledger/nearshore_eDNA/outputs/old_verison/samples_w_mock/mock_quant/mock_20240826_com4.Rdata")
+in4 <- Output
 load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in5_out1.Rdata")
 in5 <- Output
 load("/home/kimberly.ledger/nearshore_eDNA/outputs/qm_ind_mocks/mock_20241126_in6_out2.Rdata")
@@ -47,6 +49,7 @@ in13 <- Output
 p_space_in1 <- (exp(in1$pars$alpha) / rowSums(exp(in1$pars$alpha))) %>% as.data.frame()
 p_space_in2 <- (exp(in2$pars$alpha) / rowSums(exp(in2$pars$alpha))) %>% as.data.frame()
 p_space_in3 <- (exp(in3$pars$alpha) / rowSums(exp(in3$pars$alpha))) %>% as.data.frame()
+p_space_in4 <- (exp(in4$pars$alpha) / rowSums(exp(in4$pars$alpha))) %>% as.data.frame()
 p_space_in5 <- (exp(in5$pars$alpha) / rowSums(exp(in5$pars$alpha))) %>% as.data.frame()
 p_space_in6 <- (exp(in6$pars$alpha) / rowSums(exp(in6$pars$alpha))) %>% as.data.frame()
 p_space_in7 <- (exp(in7$pars$alpha) / rowSums(exp(in7$pars$alpha))) %>% as.data.frame()
@@ -61,6 +64,7 @@ p_space_in13 <- (exp(in13$pars$alpha) / rowSums(exp(in13$pars$alpha))) %>% as.da
 clr_alpha_in1 <- compositions::clr(p_space_in1) %>% as.data.frame() 
 clr_alpha_in2 <- compositions::clr(p_space_in2) %>% as.data.frame() 
 clr_alpha_in3 <- compositions::clr(p_space_in3) %>% as.data.frame() 
+clr_alpha_in4 <- compositions::clr(p_space_in4) %>% as.data.frame() 
 clr_alpha_in5 <- compositions::clr(p_space_in5) %>% as.data.frame() 
 clr_alpha_in6 <- compositions::clr(p_space_in6) %>% as.data.frame() 
 clr_alpha_in7 <- compositions::clr(p_space_in7) %>% as.data.frame() 
@@ -74,6 +78,7 @@ clr_alpha_in13 <- compositions::clr(p_space_in13) %>% as.data.frame()
 colnames(clr_alpha_in1) <- in1$Species
 colnames(clr_alpha_in2) <- in2$Species
 colnames(clr_alpha_in3) <- in3$Species
+colnames(clr_alpha_in4) <- in4$Species
 colnames(clr_alpha_in5) <- in5$Species
 colnames(clr_alpha_in6) <- in6$Species
 colnames(clr_alpha_in7) <- in7$Species
@@ -129,6 +134,21 @@ clr_alpha_sum_3 <- clr_alpha_in3 %>%
                         q.95 = quantile(val,probs=0.95),
                         q.975 = quantile(val,probs=0.975)) %>% 
   mutate(calibration = "COM3")
+
+clr_alpha_sum_4 <- clr_alpha_in4 %>% 
+                    pivot_longer( .,
+                          cols = colnames(clr_alpha_in4),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) %>% 
+  mutate(calibration = "COM4")
 
 clr_alpha_sum_5 <- clr_alpha_in5 %>% 
                     pivot_longer( .,
@@ -269,6 +289,7 @@ clr_alpha_sum_13 <- clr_alpha_in13 %>%
 clr_alpha_all <- clr_alpha_sum_1 %>%
   bind_rows(clr_alpha_sum_2) %>%
   bind_rows(clr_alpha_sum_3) %>%
+  bind_rows(clr_alpha_sum_4) %>%
   bind_rows(clr_alpha_sum_5) %>%
   bind_rows(clr_alpha_sum_6) %>%
   bind_rows(clr_alpha_sum_7) %>%
@@ -288,16 +309,19 @@ clr_alpha_all <- clr_alpha_all %>%
                                        as.character(species)))
 
 # Reorder categories numerically
-clr_alpha_all$calibration <- as.factor(clr_alpha_all$calibration)
-levels(clr_alpha_all$calibration) <- c("COM1", "COM2",  "COM3",  "COM5",  "COM6",  "COM7",  "COM8",  "COM9", "COM10", "COM11", "COM12", "COM13") 
+clr_alpha_all$calibration <- factor(clr_alpha_all$calibration, levels = c("COM1", "COM2",  "COM3", "COM4", "COM5",  "COM6",  "COM7",  "COM8",  "COM9", "COM10", "COM11", "COM12", "COM13"))
+
+#levels(clr_alpha_all$calibration) <- c("COM1", "COM2",  "COM3", "COM4", "COM5",  "COM6",  "COM7",  "COM8",  "COM9", "COM10", "COM11", "COM12", "COM13") 
+clr_alpha_all <- clr_alpha_all %>%
+  mutate(SP = ifelse(SP == "Limanda aspera", "Pleuronectidae 1", SP))
 
 p_clr <-  ggplot(clr_alpha_all) +
+    geom_vline(xintercept=0,linetype="dashed") +
     geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
     #geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
     geom_errorbarh(aes(xmin=q.05,xmax=q.95,y=SP),size=0.8,height=0) +
     #geom_point(aes(x=Mean,y=SP,fill=SP),size=3,shape=21) +
     geom_point(aes(x=Mean,y=SP,fill=calibration),size=3,shape=21) +
-    geom_vline(xintercept=0,linetype="dashed") +
     #scale_fill_manual(values=clr_alpha_sum$manual.col %>% as.character()) +
     scale_x_continuous("Amplification Efficiency (CLR)") +
     scale_y_discrete(NULL) +
@@ -311,7 +335,7 @@ p_clr
 
 
 ```{r}
-ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/clr_all_mocks.png", width = 8, height = 5, units = "in")
+ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/clr_all_mocks_w4.png", width = 8, height = 5, units = "in")
 ```
 
 ```{r}

@@ -42,6 +42,30 @@ decon_table_w_tax <-  decontaminated_table %>%
    #filter(!str_starts(Sample_ID, "COM"))
 ```
 
+```{r}
+n_distinct(decon_table_w_tax$ASV)
+n_distinct(decon_table_w_tax$taxon)
+decon_table_w_tax %>%
+  group_by(ASV) %>%
+  summarize(total_reads = sum(reads)) %>%
+  arrange(total_reads)
+sum(decon_table_w_tax$reads)
+
+sample_summary <- decon_table_w_tax %>%
+  group_by(Sample_ID, sample_type) %>%
+  summarize(total_reads = sum(reads),
+            n_ASV = n_distinct(ASV),
+            n_tax = n_distinct(taxon))
+
+sample_summary_all <- metadata %>%
+  select(Sample_ID) %>%
+  left_join(sample_summary)
+
+#write.csv(sample_summary_all, "/home/kimberly.ledger/nearshore_eDNA/outputs/sample_summary.csv")
+```
+
+
+
 make a summary table of how many reads are assigned to each taxa 
 ```{r}
 taxon_read_summary <- decon_table_w_tax %>%
@@ -97,5 +121,5 @@ bottle_prop_w_meta %>%
 
 export
 ```{r}
-write.csv(bottle_prop_w_meta, "~/nearshore_eDNA/outputs/all_taxa_simple_20250110.csv")
+#write.csv(bottle_prop_w_meta, "~/nearshore_eDNA/outputs/all_taxa_simple_20250110.csv")
 ```

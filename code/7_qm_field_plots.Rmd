@@ -99,9 +99,50 @@ mock1.all <- full_join(mock1.raw,mock1.post)
 result.dat <- left_join(mock1.all,raw.all)
 ```
 
-plot estimates of amplification efficiency (CLR transformed alpha)
+plot estimates of amplification efficiency ( alpha)
 ```{r}
 p_space_mock1 <- (exp(mock1$pars$alpha) / rowSums(exp(mock1$pars$alpha))) %>% as.data.frame()
+
+colnames(p_space_mock1) <- mock1$Species
+
+p_space_mock1_sum <- p_space_mock1 %>% 
+                    pivot_longer( .,
+                          cols = colnames(p_space_mock1),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) 
+
+# get rid of reference species denotion
+p_space_mock1_sum  <- p_space_mock1_sum  %>%
+                      mutate(SP= ifelse(grepl("zRefSpecies_",species),
+                                       substr(species,13,nchar(species)),
+                                       as.character(species)))
+
+plot1 <-  ggplot(p_space_mock1_sum) +
+    geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
+    geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
+    geom_point(aes(x=Mean,y=SP),fill = "black", size=3,shape=21) +
+    #scale_fill_manual(values=clr_alpha_sum$manual.col %>% as.character()) +
+    scale_x_continuous("Amplification Efficiency (alpha)") +
+    scale_y_discrete(NULL) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.text.y = element_text(size=10))
+
+plot1
+
+mean(p_space_mock1_sum$Mean)
+```
+
+clr
+```{r}
 
 clr_alpha_list_mock1 <- compositions::clr(p_space_mock1)
 
@@ -142,10 +183,58 @@ p_clr <-  ggplot(clr_alpha_sum) +
           axis.text.y = element_text(size=10))
 
 p_clr
+
+mean(clr_alpha_sum$Mean)
 ```
 
+alr
 ```{r}
-ggsave(p_clr, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/clr_all_mocks_combinedestimate.png", width = 7, height = 5, units = "in")
+alr_alpha_list_mock1 <- compositions::alr(p_space_mock1)
+
+alr_alpha_mock1 <- alr_alpha_list_mock1 %>% as.data.frame() 
+
+#colnames(alr_alpha_mock1) <- mock1$Species
+
+alr_alpha_sum <- alr_alpha_mock1 %>% 
+                    pivot_longer( .,
+                          cols = colnames(alr_alpha_mock1),
+                          names_to="species",values_to="val") %>%
+                    group_by(species) %>%
+                    summarize(Mean = mean(val),
+                        SD=sd(val),
+                        q.025 = quantile(val,probs=0.025),
+                        q.05 = quantile(val,probs=0.05),
+                        q.25 = quantile(val,probs=0.25),
+                        q.75 = quantile(val,probs=0.75),
+                        q.95 = quantile(val,probs=0.95),
+                        q.975 = quantile(val,probs=0.975)) 
+
+# get rid of reference species denotion
+alr_alpha_sum <- alr_alpha_sum %>%
+                      mutate(SP= ifelse(grepl("zRefSpecies_",species),
+                                       substr(species,13,nchar(species)),
+                                       as.character(species)))
+
+p_alr <-  ggplot(alr_alpha_sum) +
+    geom_vline(xintercept=0,linetype="dashed") +
+    geom_errorbarh(aes(xmin=q.25,xmax=q.75,y=SP),size=2,height=0) +
+    geom_errorbarh(aes(xmin=q.025,xmax=q.975,y=SP),size=0.8,height=0) +
+    geom_point(aes(x=Mean,y=SP,fill=SP),size=3,shape=21) +
+    #scale_fill_manual(values=clr_alpha_sum$manual.col %>% as.character()) +
+    scale_x_continuous("Amplification Efficiency (ALR)") +
+    scale_y_discrete(NULL) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.text.y = element_text(size=10))
+
+p_alr
+
+mean(clr_alpha_sum$Mean)
+```
+
+
+```{r}
+ggsave(plot1, filename = "/home/kimberly.ledger/nearshore_eDNA/outputs/figures/alpha_all_mocks_combinedestimate.png", width = 7, height = 5, units = "in")
 ```
 
 

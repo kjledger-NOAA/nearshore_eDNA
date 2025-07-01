@@ -136,6 +136,11 @@ decontaminated_1 <- indexhop_table %>%
   pivot_wider(names_from = "ASV", values_from = "IndexHoppingReads")
 ```
 
+number of unique asvs 
+```{r}
+n_distinct(unique(asv_table_filter1$ASV))
+```
+
 ## Step 2. Remove ASVs that don't get a fish taxonomic assignment  
 
 ```{r}
@@ -147,6 +152,10 @@ asv_table_filter2 <- asv_table_filter1 %>%
   filter(ASV %in% taxonomy$ASV) 
 ```
 
+number of unique asvs 
+```{r}
+n_distinct(unique(asv_table_filter2$ASV))
+```
 
 ## Step 3. Remove ASVs that do not occur in environmental samples
 
@@ -171,6 +180,10 @@ asv_table_filter3 <- asv_table_filter2 %>%
   filter(!ASV %in% not_in_samples$ASV)
 ```
 
+number of unique asvs 
+```{r}
+n_distinct(unique(asv_table_filter3$ASV))
+```
 
 ## Step 4. Remove low read depth samples based on ASV accumulation curve
 
@@ -222,6 +235,19 @@ reps_below <- asv_table_filter3 %>%
 ```{r}
 asv_table_filter4 <- asv_table_filter3 %>%
   filter(!Sample_ID %in% reps_below$Sample_ID)
+```
+
+```{r}
+asv_table_filter4 %>%
+  group_by(ASV) %>%
+  summarize(total_reads = sum(reads)) %>%
+  arrange(total_reads)
+```
+
+
+number of unique asvs 
+```{r}
+n_distinct(unique(asv_table_filter4$ASV))
 ```
 
 ```{r}

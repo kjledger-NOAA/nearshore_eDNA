@@ -357,8 +357,6 @@ single_spp <- singleton_df %>%
 tax_df_2 <- bind_rows(single_kingdom, single_phylum, single_class, single_order, single_family, single_genus, single_spp)
 ```
 
-
-
 ## also ran blastn against the salmon specific reference database 
 blastn -query /home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/filtered.seqs.fasta -db /genetics/edna/custom_dbs/salmon_mifish_db_20241227 -out home/kimberly.ledger/nearshore_eDNA/data/samples_w_mocks_updated/blastn_salmon.txt -perc_identity 96 -qcov_hsp_perc 98 -num_threads 10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore sscinames staxids'
 
@@ -453,14 +451,13 @@ salmon_comparison <- tax_df_2 %>%
   select(qseqid, species, seq_percID, taxon) %>%
   left_join(salmon_df, by = "qseqid")
 ```
-only a few differences between full ncbi db and custom salmon db. but will go ahead with the custom db verison. 
+only a few differences between full ncbi db and custom salmon db.
 
 ```{r}
 tax_df_3 <- tax_df_2 %>%
   filter(genus != "Oncorhynchus") %>%
   bind_rows(salmon_df)
 ```
-
 
 ```{r}
 tax_diff <- anti_join(tax_df_2, tax_df_3) 
@@ -482,7 +479,6 @@ Sebastes 3: lots of Sebastes sp including Sebastes flavidus
 - lump the few Myoxocephalus stelleri to genus level
 - put Pholis reads to Pholis laeta
 - move Sebastes nigrocinctus and Sebastes entomelas reads to Sebastes 3 ***
-
 
 ```{r}
 tax_df_updated <- tax_df_3 %>%
@@ -532,7 +528,6 @@ write.csv(tax_df_updated_collapsed, "/home/kimberly.ledger/nearshore_eDNA/output
 
 
 ## output table of taxonomic groupings - need to make some manual edits to reflect customized changes above 
-
 ```{r}
 groups_to_remove_1 <- tax_df_updated %>%
   filter(species == "Hexagrammos lagocephalus" | species == "Hexagrammos octogrammus" | species == "Hexagrammos stelleri") %>%
