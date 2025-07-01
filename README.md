@@ -11,6 +11,8 @@ amplicon sequences were generated across three MiSeq runs:
 * mock communities 1 thru 10: august 20 2024
 * mock communities 11 thru 13: october 16 2024
 
+FAIR eDNA metadata: https://docs.google.com/spreadsheets/d/1YoPY652Eie5Y-KFF-er4L-sFThxsS1SDf6gcAWQVhos/edit?usp=sharing
+
 ### 2. pre-processing 
 
 step 1: combined all raw sequencing reads (mock communities and eDNA samples) into a single folder and created sample sheet. uploaded folder to HPCC.
